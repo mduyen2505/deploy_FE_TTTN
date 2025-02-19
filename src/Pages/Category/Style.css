@@ -3,8 +3,9 @@
     gap: 20px;
     padding: 20px;
     background: #f9f9f9;
+    flex-wrap: wrap;
+
   }
-  
   .sidebar {
     width: 250px;
     background: white;
@@ -12,11 +13,76 @@
     border-radius: 10px;
   }
   
-  .products-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
   }
+  
+  p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  a.category-link {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+  }
+  
+  a.subcategory-link {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  a.subcategory-link:hover {
+    text-decoration: underline;
+  }
+  
+  .price-filter input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .price-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .brand-filter label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .apply-filter {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .apply-filter:hover {
+    background-color: #0056b3;
+  }
+  .products-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+  
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+  max-width: 1200px; /* Giới hạn chiều rộng */
+  margin: 0 auto;
+}
+
   
   .apply-filter {
     background: black;
@@ -27,4 +93,35 @@
     width: 100%;
     margin-top: 10px;
   }
+  .pagination {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.pagination button {
+    margin: 5px;
+    padding: 8px 12px;
+    border: none;
+    background: #007BFF;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination button.active {
+    background: black;
+}
+
+.pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+}
+
   

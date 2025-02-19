@@ -12,6 +12,8 @@ const CategoryPage = () => {
     const [brands, setBrands] = useState([]);
     const [selectedBrand, setSelectedBrand] = useState([]);
     const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 20;
 
 
     useEffect(() => {
@@ -57,16 +59,57 @@ const CategoryPage = () => {
         fetchBrands();
 
     }, [typeId]);
+     // Tính toán số trang
+     const totalPages = Math.ceil(products.length / productsPerPage);
+     const indexOfLastProduct = currentPage * productsPerPage;
+     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+     const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
 
     return (
         <div className="category-page">
-            <aside className="sidebar">
-                <h2>Filters</h2>
-                <p>Product Type</p>
-                <p>Skin Type</p>
-                <p>Price Range</p>
-                <button className="apply-filter">Apply</button>
-            </aside>
+  <aside className="sidebar">
+    <h2>Filters</h2>
+    
+    <p>
+      <a href="#" class="category-link">Danh mục cha - Tên danh mục</a>
+    </p>
+    
+    <p>
+      <a href="#" class="subcategory-link">Danh mục con 1</a>
+    </p>
+    <p>
+      <a href="#" class="subcategory-link">Danh mục con 2</a>
+    </p>
+    <p>
+      <a href="#" class="subcategory-link">Danh mục con 3</a>
+    </p>
+
+    <p>Price Range</p>
+    <div class="price-filter">
+      <input type="range" min="0" max="1000" step="10" value="500" id="priceRange" class="range-slider"/>
+      <div class="price-values">
+        <span id="minValue">0</span>
+        <span id="currentValue">500</span>
+        <span id="maxValue">1000</span>
+      </div>
+    </div>
+    
+    <p>Thương hiệu</p>
+    <div class="brand-filter">
+      <label>
+        <input type="checkbox" /> Thương hiệu 1
+      </label>
+      <label>
+        <input type="checkbox" /> Thương hiệu 2
+      </label>
+      <label>
+        <input type="checkbox" /> Thương hiệu 3
+      </label>
+    </div>
+
+    <button class="apply-filter">Apply</button>
+  </aside>
+
 
             <section className="products-container">
                 {loading ? (
@@ -76,8 +119,38 @@ const CategoryPage = () => {
                 ) : (
                     <p>Không có sản phẩm nào.</p>
                 )}
+                
             </section>
-        </div>
+             {/* Pagination - đặt ra ngoài products-container */}
+            <div className="pagination-container">
+                <div className="pagination">
+                    <button 
+                        disabled={currentPage === 1} 
+                        onClick={() => setCurrentPage(prev => prev - 1)}
+                    >
+                        Previous
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, index) => (
+                        <button 
+                            key={index + 1} 
+                            className={currentPage === index + 1 ? "active" : ""}
+                            onClick={() => setCurrentPage(index + 1)}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+
+                    <button 
+                        disabled={currentPage === totalPages} 
+                        onClick={() => setCurrentPage(prev => prev + 1)}
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+        
+    </div>
     );
 };
 

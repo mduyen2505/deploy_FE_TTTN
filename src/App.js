@@ -6,6 +6,7 @@ import Header from './Components/Header/Header';
 import SignUpPage from './Pages/auth/register';
 import LoginPage from './Pages/auth/Login';
 import CategoryPage from './Pages/Category/Category';
+import Promo from './Pages/Promotion/Promotion';
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/subcategory/:typeId" element={<CategoryPage />} />
+        <Route path="/promo" element={<Promo />} />
 
       </Routes>
     </BrowserRouter>

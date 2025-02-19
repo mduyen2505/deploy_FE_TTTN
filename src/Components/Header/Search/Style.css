@@ -1,0 +1,35 @@
+.headerSearch {
+    position: relative;
+    flex-grow: 1;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    margin: 0 30px;
+  }
+  
+  .headerSearch input {
+    width: 100%;
+    padding: 12px 50px 12px 20px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .headerSearch input:focus {
+    border-color: #ff758c;
+    outline: none;
+  }
+  
+  .headerSearch button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #ff758c;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  

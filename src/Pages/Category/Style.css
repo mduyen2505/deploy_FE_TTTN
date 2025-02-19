@@ -1,0 +1,30 @@
+.category-page {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .products-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .apply-filter {
+    background: black;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+  }
+  

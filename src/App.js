@@ -5,7 +5,7 @@ import Home from './Pages/Home/Home';
 import Header from './Components/Header/Header';
 import SignUpPage from './Pages/auth/register';
 import LoginPage from './Pages/auth/Login';
-import CategoryPage from './Pages/Category/Category';
+import CategoryPage from './Pages/SubCategory/SubCategory';
 import Promo from './Pages/Promotion/Promotion';
 function App() {
   return (

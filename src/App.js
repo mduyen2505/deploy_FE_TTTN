@@ -7,6 +7,7 @@ import SignUpPage from './Pages/auth/register';
 import LoginPage from './Pages/auth/Login';
 import CategoryPage from './Pages/SubCategory/SubCategory';
 import Promo from './Pages/Promotion/Promotion';
+import MenuPage from './Pages/Menu/MenuPage';
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/subcategory/:typeId" element={<CategoryPage />} />
         <Route path="/promo" element={<Promo />} />
+        <Route path="/menu" element={<MenuPage />} />
 
       </Routes>
     </BrowserRouter>

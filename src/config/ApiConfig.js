@@ -6,6 +6,7 @@ export const BRANDS = `${BASE_URL}/brands`; // API danh sách thương hiệu
 export const getProductsBySubcategory = (subCategoryId) => 
     `${BASE_URL}/products/subcategory/${subCategoryId}`;
 export const FEATURED_PRODUCTS = `${BASE_URL}/products/featured?limit=8`;
+export const ALL_PRODUCTS = `${BASE_URL}/products`;
 
 
 

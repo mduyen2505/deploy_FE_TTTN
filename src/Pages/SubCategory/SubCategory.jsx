@@ -4,6 +4,7 @@ import { getProductsBySubcategory, BRANDS } from "../../config/ApiConfig";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import "./Style.css";
 import Header from "../../Components/Header/Header";
+import Filter from "../../Components/Filters/Filters";
 
 
 const SubCategoryPage = () => {
@@ -13,6 +14,9 @@ const SubCategoryPage = () => {
     const [brands, setBrands] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 20;
+    const [selectedBrand, setSelectedBrand] = useState([]); // Lưu danh sách thương hiệu đã chọn
+        const [priceRange, setPriceRange] = useState(1000);
+    
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -53,21 +57,12 @@ const SubCategoryPage = () => {
         <div className="category-page">
             <Header />
             <div className="main-content">
-                {/* Sidebar */}
-                <aside className="sidebar">
-                    <h2>Filters</h2>
-                    <p><a href="#" className="category-link">Danh mục cha - Tên danh mục</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 1</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 2</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 3</a></p>
-                    <p>Price Range</p>
-                    <input type="range" min="0" max="1000" />
-                    <p>Thương hiệu</p>
-                    <label><input type="checkbox" /> Thương hiệu 1</label>
-                    <label><input type="checkbox" /> Thương hiệu 2</label>
-                    <label><input type="checkbox" /> Thương hiệu 3</label>
-                    <button className="apply-filter">Apply</button>
-                </aside>
+            <Filter
+                    selectedBrand={selectedBrand} 
+                    setSelectedBrand={setSelectedBrand} 
+                    priceRange={priceRange} 
+                    setPriceRange={setPriceRange} 
+                />
     
                 {/* Danh sách sản phẩm + Pagination */}
                 <section className="products-wrapper">

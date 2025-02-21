@@ -14,4 +14,16 @@ export const getProductsByCategory = (categoryId) =>
 export const getProductsBySubcategory = (subCategoryId) => 
     `${BASE_URL}/products/subcategory/${subCategoryId}`;
 
+// API lấy sản phẩm theo thương hiệu (Brand)
+export const getProductsbyBrand = (brandId) => 
+    `${BASE_URL}/products/brands/${brandId}`;
 
+// API lấy thông tin chi tiết của một thương hiệu
+export const getBrandDetails = (brandId) => 
+    `${BASE_URL}/brands/${brandId}`;
+
+// API lấy danh sách voucher khuyến mãi
+export const getCoupons = `${BASE_URL}/coupons`;
+//API lấy thông tin chi tiết sản phẩm theo ID
+export const getProductDetails = (productId) => 
+    `${BASE_URL}/products/types/${productId}`;

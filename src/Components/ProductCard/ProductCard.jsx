@@ -1,18 +1,20 @@
 import React from "react";
 import "./Style.css";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons"; // Empty star
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons"; // Filled star
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate(); // Hook điều hướng
   const rating = product.rating || 0; // Default to 0 if no rating
   const stars = Array.from({ length: 5 }, (_, index) =>
     index < rating ? solidStar : regularStar
   );
 
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={() => navigate(`/product/${product._id}`)}>
       {product.discount && <span className="discount-tag">-{product.discount}%</span>}
       <FavoriteBorderOutlinedIcon className="favorite-icon" />
       <img

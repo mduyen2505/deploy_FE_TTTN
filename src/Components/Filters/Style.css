@@ -1,0 +1,67 @@
+/* Sidebar bộ lọc */
+.sidebar {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.sidebar p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Danh mục cha và danh mục con */
+.sidebar a.category-link {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
+}
+
+.sidebar a.subcategory-link {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.sidebar a.subcategory-link:hover {
+    text-decoration: underline;
+}
+
+/* Thanh điều chỉnh giá */
+.sidebar input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Danh sách thương hiệu */
+.sidebar label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+/* Nút Apply */
+.apply-filter {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.apply-filter:hover {
+    background-color: #0056b3;
+}

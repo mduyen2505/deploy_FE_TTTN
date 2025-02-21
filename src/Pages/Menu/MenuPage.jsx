@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { ALL_PRODUCTS, SUBCATEGORIES, BRANDS } from "../../config/ApiConfig"; // Import API
 import ProductCard from "../../Components/ProductCard/ProductCard"; // Import giao diện sản phẩm
 import Header from "../../Components/Header/Header"; // Import Header
-import "./Style.css"; 
+import "./Style.css";
+import Filter from "../../Components/Filters/Filters"; 
 
 const MenuPage = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [subcategories, setSubcategories] = useState([]);
     const [brands, setBrands] = useState([]);
-    const [selectedBrand, setSelectedBrand] = useState([]);
-    const [priceRange, setPriceRange] = useState({ min: "", max: "" });
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 20;
+     const [selectedBrand, setSelectedBrand] = useState([]); // Lưu danh sách thương hiệu đã chọn
+        const [priceRange, setPriceRange] = useState(1000);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -64,21 +65,12 @@ const MenuPage = () => {
         <div className="menu-page">
             <Header />
             <div className="main-content">
-                {/* Sidebar */}
-                <aside className="sidebar">
-                    <h2>Filters</h2>
-                    <p><a href="#" className="category-link">Danh mục cha - Tên danh mục</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 1</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 2</a></p>
-                    <p><a href="#" className="subcategory-link">Danh mục con 3</a></p>
-                    <p>Price Range</p>
-                    <input type="range" min="0" max="1000" />
-                    <p>Thương hiệu</p>
-                    <label><input type="checkbox" /> Thương hiệu 1</label>
-                    <label><input type="checkbox" /> Thương hiệu 2</label>
-                    <label><input type="checkbox" /> Thương hiệu 3</label>
-                    <button className="apply-filter">Apply</button>
-                </aside>
+            <Filter
+                    selectedBrand={selectedBrand} 
+                    setSelectedBrand={setSelectedBrand} 
+                    priceRange={priceRange} 
+                    setPriceRange={setPriceRange} 
+                />
 
                 {/* Danh sách sản phẩm + Pagination */}
                 <section className="products-wrapper">

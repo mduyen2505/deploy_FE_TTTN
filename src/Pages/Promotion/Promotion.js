@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { getCoupons, ALL_PRODUCTS } from "../../config/ApiConfig";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import Header from "../../Components/Header/Header";
 import "./Style.css";
 
 const Promo = () => {
     const [products, setProducts] = useState([]);
+    const [vouchers, setVouchers] = useState([]); // Lưu danh sách voucher từ API
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const productsPerPage = 20; // Số sản phẩm mỗi trang
@@ -12,56 +14,41 @@ const Promo = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch("http://localhost:3000/api/products");
+                const response = await fetch(ALL_PRODUCTS);
                 if (!response.ok) throw new Error(`Lỗi HTTP! Status: ${response.status}`);
 
                 const data = await response.json();
-
-                // Lọc sản phẩm giảm giá
                 const discountedProducts = data.filter(product => product.discount > 0);
-
                 setProducts(discountedProducts);
-                setLoading(false);
             } catch (error) {
                 console.error("Lỗi khi lấy sản phẩm:", error);
+            } finally {
                 setLoading(false);
             }
         };
 
-        fetchProducts();
-    }, []);
+        const fetchVouchers = async () => {
+            try {
+                const response = await fetch(getCoupons);
+                if (!response.ok) throw new Error(`Lỗi HTTP! Status: ${response.status}`);
 
-    // Danh sách voucher tĩnh
-    const vouchers = [
-        {
-            id: 1,
-            logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Unilever.svg/1200px-Unilever.svg.png",
-            discount: "Giảm 25K",
-            description: "Mua sản phẩm Omo, Comfort, Surf, Vim, Lifebuoy, Clear,... từ 299.000đ",
-            expiry: "28/02/2025"
-        },
-        {
-            id: 2,
-            logo: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Kun_logo.png",
-            discount: "Giảm 50K",
-            description: "Mua sản phẩm Sữa Tiệt Trùng KUN từ 350.000đ",
-            expiry: "21/02/2025"
-        },
-        {
-            id: 3,
-            logo: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Clear_logo.png",
-            discount: "Giảm 20K",
-            description: "Mua sản phẩm dầu gội Tresemme, Dove, Clear, Lifebuoy, Sunsilk từ 200.000đ",
-            expiry: "28/02/2025"
-        },
-        {
-            id: 4,
-            logo: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Dove_logo.png",
-            discount: "Giảm 15K",
-            description: "Mua sản phẩm lăn, xịt khử mùi Dove từ 90.000đ",
-            expiry: "28/02/2025"
-        }
-    ];
+                const data = await response.json();
+
+                if (data && Array.isArray(data.data)) {
+                    setVouchers(data.data); // Lấy đúng danh sách voucher từ API
+                } else {
+                    console.error("Dữ liệu API không đúng:", data);
+                    setVouchers([]);
+                }
+            } catch (error) {
+                console.error("Lỗi khi lấy danh sách voucher:", error);
+                setVouchers([]);
+            }
+        };
+
+        fetchProducts();
+        fetchVouchers();
+    }, []);
 
     // Tính toán số trang
     const totalPages = Math.ceil(products.length / productsPerPage);
@@ -73,23 +60,35 @@ const Promo = () => {
         <div className="promo-page">
             <Header />
 
+            {/* Danh sách Voucher */}
             <h2 className="voucher-title">🎉 ƯU ĐÃI ĐẶC BIỆT 🎉</h2>
             <div className="voucher-container">
-                {vouchers.map((voucher) => (
-                    <div key={voucher.id} className="voucher-card">
-                        <img src={voucher.logo} alt="Brand Logo" className="voucher-logo" />
-                        <h3 className="voucher-discount">{voucher.discount}</h3>
-                        <p className="voucher-description">{voucher.description}</p>
-                        <p className="voucher-expiry">KT: {voucher.expiry}</p>
-                        <button className="voucher-button">LẤY NGAY</button>
-                    </div>
-                ))}
+                {loading ? (
+                    <p>Loading vouchers...</p>
+                ) : Array.isArray(vouchers) && vouchers.length > 0 ? (
+                    vouchers.map((voucher) => (
+                        <div key={voucher._id} className="voucher-card">
+                            <img
+                                src={`http://localhost:3000/images/${voucher.image}`}
+                                alt={voucher.name}
+                                className="voucher-logo"
+                            />
+                            <h3 className="voucher-discount">Giảm {voucher.discount}%</h3>
+                            <p className="voucher-description">{voucher.description}</p>
+                            <p className="voucher-expiry">Hết hạn: {new Date(voucher.expiry).toLocaleDateString()}</p>
+                            <button className="voucher-button">LẤY NGAY</button>
+                        </div>
+                    ))
+                ) : (
+                    <p>Không có voucher nào.</p>
+                )}
             </div>
 
+            {/* Danh sách sản phẩm đang giảm giá */}
             <h2 className="product-title">🔥 SẢN PHẨM GIẢM GIÁ 🔥</h2>
             <section className="products-container">
                 {loading ? (
-                    <p>Loading...</p>
+                    <p>Loading products...</p>
                 ) : currentProducts.length > 0 ? (
                     currentProducts.map((product) => <ProductCard key={product._id} product={product} />)
                 ) : (

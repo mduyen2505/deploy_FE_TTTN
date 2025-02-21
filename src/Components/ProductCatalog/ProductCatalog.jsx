@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Style.css";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -50,10 +51,13 @@ const ProductCatalog = () => {
                             {brands.map((brand) => (
                                 <SwiperSlide key={brand._id}>
                                     <div className="item text-center cursor">
-                                        <img
-                                            src={brand.image.startsWith("http") ? brand.image : `http://localhost:3000/images/${brand.image}`} 
-                                            alt={brand.title}
-                                        />
+                                        <Link to={`/brand/${brand._id}`}>
+                                            <img
+                                                src={brand.image.startsWith("http") ? brand.image : `http://localhost:3000/images/${brand.image}`} 
+                                                alt={brand.title}
+                                            />
+                                        </Link>
+
                                         <h6>{brand.title}</h6>
                                     </div>
                                 </SwiperSlide>

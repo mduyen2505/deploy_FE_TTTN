@@ -35,8 +35,8 @@
 
 /* Logo thương hiệu trong voucher */
 .voucher-logo {
-    width: 40px;
-    height: 40px;
+    width: 100px;
+    height: 70px;
     object-fit: contain;
     margin-bottom: 5px;
 }

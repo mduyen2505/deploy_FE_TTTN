@@ -9,6 +9,8 @@ import SubCategoryPage from './Pages/SubCategory/SubCategory';
 import Promo from './Pages/Promotion/Promotion';
 import MenuPage from './Pages/Menu/MenuPage';
 import CategoryPage from './Pages/Category/CategoryPage';
+import ProductsbyBrand from './Pages/ProductsbyBrand/ProductsbyBrand';
+import ProductDetail from './Pages/ProductDetail/ProductDetail';
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +22,8 @@ function App() {
         <Route path="/promo" element={<Promo />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/category/:typeId" element={<CategoryPage />} />
+        <Route path="/brand/:brandId" element={<ProductsbyBrand />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
 
 
       </Routes>

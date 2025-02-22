@@ -34,31 +34,42 @@ const SignUpPage = () => {
         e.preventDefault();
         setError("");
         setSuccess("");
-
+    
         if (formData.password !== formData.confirmPassword) {
             setError("Mật khẩu nhập lại không khớp!");
             return;
         }
-
+    
         try {
             const response = await axios.post(REGISTER_USER, {
                 username: formData.username,
                 email: formData.email,
                 phoneNumber: formData.phoneNumber,
                 password: formData.password,
-                resPassword: formData.confirmPassword // Gửi đúng field API yêu cầu
             });
-
-            if (response.data.user) {
-                setSuccess("Đăng ký thành công! Chuyển hướng đến trang đăng nhập...");
-                setTimeout(() => navigate("/login"), 1000);
+    
+            if (response.data && response.data.token) {
+                // Lưu user và token vào localStorage
+                const user = {
+                    username: response.data.username,
+                    email: response.data.email,
+                    phoneNumber: response.data.phoneNumber,
+                    token: response.data.token,
+                };
+    
+                localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem("token", response.data.token);
+    
+                setSuccess("Đăng ký thành công! Đang chuyển hướng...");
+                setTimeout(() => navigate("/"), 1000);
             } else {
-                setError("Đăng ký thất bại. Vui lòng thử lại!");
+                setError("Lỗi: Không nhận được token từ server!");
             }
         } catch (error) {
             setError(error.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại!");
         }
     };
+    
 
     return (
         <div className="register-page">

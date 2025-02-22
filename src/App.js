@@ -11,6 +11,7 @@ import CategoryPage from './Pages/Category/CategoryPage';
 import ProductsbyBrand from './Pages/ProductsbyBrand/ProductsbyBrand';
 import ProductDetail from './Pages/ProductDetail/ProductDetail';
 import SignUpPage from './Pages/Register/register';
+import CartPage from './Pages/Cart/CartPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/category/:typeId" element={<CategoryPage />} />
         <Route path="/brand/:brandId" element={<ProductsbyBrand />} />
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<CartPage />} />
 
 
       </Routes>

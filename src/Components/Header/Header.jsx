@@ -14,20 +14,47 @@ import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import axios from "axios"; // Import axios để gọi API
+import { GET_CART } from "../../config/ApiConfig"; // Import API giỏ hàng
+
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
+    const [cartQuantity, setCartQuantity] = useState(0); // State để lưu số lượng sản phẩm trong giỏ hàng
+
 
     useEffect(() => {
-        const user = localStorage.getItem('user');
-        if (user) {
-            const userData = JSON.parse(user);
-            setIsLoggedIn(true);
-            setUsername(userData.username || "");
-        }
+        const fetchCartQuantity = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                if (!token) return;
+
+                const response = await axios.get(GET_CART, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                console.log("Dữ liệu giỏ hàng từ API:", response.data); // Debug dữ liệu
+
+                if (response.data && response.data.products.length > 0) {
+                    const totalQuantity = response.data.products.reduce(
+                        (sum, product) => sum + product.quantity, 
+                        0
+                    );
+                    setCartQuantity(totalQuantity);
+                } else {
+                    setCartQuantity(0);
+                }
+            } catch (error) {
+                console.error("Lỗi khi gọi API giỏ hàng:", error);
+                setCartQuantity(0);
+            }
+        };
+
+        fetchCartQuantity();
     }, []);
 
     const handleUserClick = () => {
@@ -44,6 +71,11 @@ const Header = () => {
         setUsername("");
         navigate('/login');
     };
+
+    const handleCartClick = () => {
+        navigate('/cart'); // Chuyển hướng đến trang giỏ hàng
+    };
+
 
 
     return (
@@ -99,11 +131,12 @@ const Header = () => {
                         </ClickAwayListener>
                         {/* Cart Tab */}
                         <div className="cartTab">
-                            <Button className="circle">
-                                <IoBagOutline />
+                        <Button className="circle" onClick={handleCartClick}>
+                        <IoBagOutline />
                             </Button>
-                            <span className="count d-flex align-items-center justify-content-center">1</span>
-                            <div className="cart-text">Giỏ hàng</div>
+                            <span className="count d-flex align-items-center justify-content-center">
+                                {cartQuantity} {/* Hiển thị số sản phẩm trong giỏ hàng */}
+                            </span>                            <div className="cart-text">Giỏ hàng</div>
                         </div>
                     </div>
                 </div>

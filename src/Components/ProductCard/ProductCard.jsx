@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons"; // Empty star
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons"; // Filled star
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-
+import { addToCart } from "../../services/CartService";
 const ProductCard = ({ product }) => {
   const navigate = useNavigate(); // Hook điều hướng
   const rating = product.rating || 0; // Default to 0 if no rating
@@ -42,8 +42,8 @@ const ProductCard = ({ product }) => {
           )}
         </div>
 
-        <button className="add-to-bag">Add To Bag</button>
-      </div>
+        <button className="add-to-bag" onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
+        </div>
     </div>
   );
 };

@@ -126,8 +126,8 @@ header .part3 .cartTab {
 
 .cartTab .count {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -3px;
+  right: -2px;
   background-color: #ff4081;
   color: #fff;
   width: 18px;

@@ -7,6 +7,7 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { FEATURED_PRODUCTS } from "../../config/ApiConfig"; // Import API từ file cấu hình
+import { addToCart } from "../../services/CartService";
 
 const Suggestion = () => {
     const [products, setProducts] = useState([]);
@@ -83,8 +84,8 @@ const Suggestion = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <button className="add-to-bag">Thêm vào giỏ</button>
-                                </div>
+                                    <button className="add-to-bag" onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
+                                    </div>
                             </div>
                         );
                     })}

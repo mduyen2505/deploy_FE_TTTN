@@ -5,7 +5,7 @@ import Header from "../../Components/Header/Header";
 import { getProductDetails } from "../../config/ApiConfig";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import CloseIcon from "@mui/icons-material/Close"; // Icon đóng modal
-
+import { addToCart } from "../../services/CartService";
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -74,7 +74,7 @@ const ProductDetail = () => {
 
                     {/* Nút thêm vào giỏ hàng + icon trái tim (cùng 1 hàng) */}
                     <div className="product-detail-actions">
-                        <button className="product-detail-add-to-cart">Thêm vào giỏ hàng</button>
+                        <button className="product-detail-add-to-cart"onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
                         <button className="product-detail-favorite">
                             <FavoriteBorderOutlinedIcon />
                         </button>

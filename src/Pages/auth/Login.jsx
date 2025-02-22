@@ -32,27 +32,33 @@ const LoginPage = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post(LOGIN_USER, {
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        password: formData.password
-      });
+        const response = await axios.post(LOGIN_USER, {
+            email: formData.email,
+            phoneNumber: formData.phoneNumber,
+            password: formData.password
+        });
 
-      if (response.data) {
-        const user = {
-            username: response.data.username, // Lưu tên user
-            email: response.data.email,
-            phoneNumber: response.data.phoneNumber,
-        };
+        if (response.data && response.data.token) {
+            const user = {
+                username: response.data.username,
+                email: response.data.email,
+                phoneNumber: response.data.phoneNumber,
+                token: response.data.token, // Lưu token vào localStorage
+            };
 
-        localStorage.setItem("user", JSON.stringify(user));
-        setSuccess("Đăng nhập thành công!");
-        setTimeout(() => navigate("/"), 1000);
-    }
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("token", response.data.token); // Lưu riêng token
+
+            setSuccess("Đăng nhập thành công!");
+            setTimeout(() => navigate("/"), 1000);
+        } else {
+            setError("Lỗi: Không nhận được token từ server!");
+        }
     } catch (error) {
-      setError(error.response?.data?.message || "Đăng nhập thất bại. Vui lòng thử lại!");
+        setError(error.response?.data?.message || "Đăng nhập thất bại. Vui lòng thử lại!");
     }
-  };
+};
+
 
   return (
     <div className="login-page">

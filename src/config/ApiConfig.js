@@ -29,5 +29,5 @@ export const getProductDetails = (productId) =>
     `${BASE_URL}/products/types/${productId}`;
 export const REGISTER_USER = `${BASE_URL}/users/register`;
 export const LOGIN_USER = `${BASE_URL}/users/login`;  // 
-export const GET_CART = `${BASE_URL}/carts`;
+export const GET_CART = `${BASE_URL}/carts`; // Thêm API giỏ hàng
 

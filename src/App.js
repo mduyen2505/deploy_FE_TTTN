@@ -3,7 +3,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './Pages/Home/Home';
 import Header from './Components/Header/Header';
-import SignUpPage from './Pages/auth/register';
 import LoginPage from './Pages/auth/Login';
 import SubCategoryPage from './Pages/SubCategory/SubCategory';
 import Promo from './Pages/Promotion/Promotion';
@@ -11,6 +10,8 @@ import MenuPage from './Pages/Menu/MenuPage';
 import CategoryPage from './Pages/Category/CategoryPage';
 import ProductsbyBrand from './Pages/ProductsbyBrand/ProductsbyBrand';
 import ProductDetail from './Pages/ProductDetail/ProductDetail';
+import SignUpPage from './Pages/Register/register';
+
 function App() {
   return (
     <BrowserRouter>

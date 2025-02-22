@@ -17,30 +17,34 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Kiểm tra trạng thái đăng nhập
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
-        const user = localStorage.getItem('user'); // Kiểm tra thông tin người dùng trong localStorage
+        const user = localStorage.getItem('user');
         if (user) {
+            const userData = JSON.parse(user);
             setIsLoggedIn(true);
+            setUsername(userData.username || "");
         }
     }, []);
 
     const handleUserClick = () => {
         if (!isLoggedIn) {
-            navigate('/login'); // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+            navigate('/login');
         } else {
-            setIsDropdownOpen((prev) => !prev); // Nếu đã đăng nhập, mở dropdown
+            setIsDropdownOpen((prev) => !prev);
         }
     };
-    
 
     const handleLogout = () => {
-        localStorage.removeItem('user'); // Xóa thông tin đăng nhập
+        localStorage.removeItem('user');
         setIsLoggedIn(false);
-        navigate('/login'); // Chuyển hướng về trang đăng nhập sau khi đăng xuất
+        setUsername("");
+        navigate('/login');
     };
+
 
     return (
         <>
@@ -69,29 +73,30 @@ const Header = () => {
                     </div>
                     {/* User and Cart */}
                     <div className="part3 d-flex align-items-center">
-                        <ClickAwayListener onClickAway={() => setIsDropdownOpen(false)}>
-                            {/* User Dropdown */}
+                    <ClickAwayListener onClickAway={() => setIsDropdownOpen(false)}>
                             <div className="userDropdown">
                                 <Button className="circle" onClick={handleUserClick}>
                                     <FiUser />
                                 </Button>
-                                {isLoggedIn ? (
-                                    <>
-                                        <div className="greeting">Xin chào, User!</div>
-                                        {isDropdownOpen && (
-                                            <ul className="dropdownMenu">
-                                                <li><Button><Person2OutlinedIcon /> My Account</Button></li>
-                                                <li><Button><RoomOutlinedIcon /> Order Tracking</Button></li>
-                                                <li><Button><FavoriteBorderOutlinedIcon /> My Wishlist</Button></li>
-                                                <li><Button><SettingsOutlinedIcon /> Setting</Button></li>
-                                                <li><Button onClick={handleLogout}><LogoutOutlinedIcon /> Sign Out</Button></li>
-                                            </ul>
-                                        )}
-                                    </>
-                                ) : null}
+                                <div className="greeting">
+    {isLoggedIn ? (
+        `Xin chào ${username}!`
+    ) : (
+        <Link to="/login" className="login-link">Đăng nhập</Link>
+    )}
+</div>
+
+                                {isLoggedIn && isDropdownOpen && (
+                                    <ul className="dropdownMenu">
+                                        <li><Button><Person2OutlinedIcon /> My Account</Button></li>
+                                        <li><Button><RoomOutlinedIcon /> Order Tracking</Button></li>
+                                        <li><Button><FavoriteBorderOutlinedIcon /> My Wishlist</Button></li>
+                                        <li><Button><SettingsOutlinedIcon /> Setting</Button></li>
+                                        <li><Button onClick={handleLogout}><LogoutOutlinedIcon /> Sign Out</Button></li>
+                                    </ul>
+                                )}
                             </div>
                         </ClickAwayListener>
-
                         {/* Cart Tab */}
                         <div className="cartTab">
                             <Button className="circle">

@@ -32,7 +32,7 @@ nav .navPart2 ul {
 
 nav .navPart2 ul li a {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 600 !important;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;

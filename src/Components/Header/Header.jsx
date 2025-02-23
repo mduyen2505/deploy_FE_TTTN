@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import React, { useState, useEffect } from 'react'; 
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/images/logo.png';
 import Search from './Search/Search';
 import Location from './Location/Location';
@@ -14,48 +14,55 @@ import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import axios from "axios"; // Import axios để gọi API
-import { GET_CART } from "../../config/ApiConfig"; // Import API giỏ hàng
-
+import axios from "axios";
+import { GET_CART } from "../../config/ApiConfig";
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [username, setUsername] = useState("");
+    const [cartQuantity, setCartQuantity] = useState(0);
     const navigate = useNavigate();
-    const [cartQuantity, setCartQuantity] = useState(0); // State để lưu số lượng sản phẩm trong giỏ hàng
-
 
     useEffect(() => {
-        const fetchCartQuantity = async () => {
-            try {
-                const token = localStorage.getItem("token");
+        // Kiểm tra đăng nhập khi component mount
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setIsLoggedIn(true);
+            setUsername(parsedUser.username);
+        }
 
-                if (!token) return;
+        // Gọi API lấy số lượng giỏ hàng nếu đã đăng nhập
+        if (localStorage.getItem("token")) {
+            fetchCartQuantity();
+        }
+    }, []);
 
-                const response = await axios.get(GET_CART, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+    const fetchCartQuantity = async () => {
+        try {
+            const token = localStorage.getItem("token");
 
-                console.log("Dữ liệu giỏ hàng từ API:", response.data); // Debug dữ liệu
+            if (!token) return;
 
-                if (response.data && response.data.products.length > 0) {
-                    const totalQuantity = response.data.products.reduce(
-                        (sum, product) => sum + product.quantity, 
-                        0
-                    );
-                    setCartQuantity(totalQuantity);
-                } else {
-                    setCartQuantity(0);
-                }
-            } catch (error) {
-                console.error("Lỗi khi gọi API giỏ hàng:", error);
+            const response = await axios.get(GET_CART, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (response.data && response.data.products.length > 0) {
+                const totalQuantity = response.data.products.reduce(
+                    (sum, product) => sum + product.quantity, 
+                    0
+                );
+                setCartQuantity(totalQuantity);
+            } else {
                 setCartQuantity(0);
             }
-        };
-
-        fetchCartQuantity();
-    }, []);
+        } catch (error) {
+            console.error("Lỗi khi gọi API giỏ hàng:", error);
+            setCartQuantity(0);
+        }
+    };
 
     const handleUserClick = () => {
         if (!isLoggedIn) {
@@ -67,20 +74,24 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         setIsLoggedIn(false);
         setUsername("");
-        navigate('/login');
+        setCartQuantity(0);
+        navigate("/");
     };
 
     const handleCartClick = () => {
-        navigate('/cart'); // Chuyển hướng đến trang giỏ hàng
+        if (isLoggedIn) {
+            navigate('/cart'); 
+        } else {
+            alert("Vui lòng đăng nhập để xem giỏ hàng!");
+            navigate('/login');
+        }
     };
-
-
 
     return (
         <>
-            {/* Top Strip */}
             <div className="headerWrapper">
                 <div className="top-strip bg-pink">
                     <div className="container">
@@ -89,7 +100,6 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Main Header */}
             <header className="header">
                 <div className="container d-flex align-items-center">
                     {/* Logo */}
@@ -98,25 +108,27 @@ const Header = () => {
                             <img src={Logo} alt="Logo" />
                         </Link>
                     </div>
+                    
                     {/* Search and Location */}
                     <div className="col-sm-10 d-flex align-items-center part2">
                         <Search />
                         <Location />
                     </div>
+
                     {/* User and Cart */}
                     <div className="part3 d-flex align-items-center">
-                    <ClickAwayListener onClickAway={() => setIsDropdownOpen(false)}>
+                        <ClickAwayListener onClickAway={() => setIsDropdownOpen(false)}>
                             <div className="userDropdown">
                                 <Button className="circle" onClick={handleUserClick}>
                                     <FiUser />
                                 </Button>
                                 <div className="greeting">
-    {isLoggedIn ? (
-        `Xin chào ${username}!`
-    ) : (
-        <Link to="/login" className="login-link">Đăng nhập</Link>
-    )}
-</div>
+                                    {isLoggedIn ? (
+                                        `Xin chào,${username}`
+                                    ) : (
+                                        <Link to="/login" className="login-link">Đăng nhập</Link>
+                                    )}
+                                </div>
 
                                 {isLoggedIn && isDropdownOpen && (
                                     <ul className="dropdownMenu">
@@ -129,14 +141,16 @@ const Header = () => {
                                 )}
                             </div>
                         </ClickAwayListener>
+
                         {/* Cart Tab */}
                         <div className="cartTab">
-                        <Button className="circle" onClick={handleCartClick}>
-                        <IoBagOutline />
+                            <Button className="circle" onClick={handleCartClick}>
+                                <IoBagOutline />
                             </Button>
                             <span className="count d-flex align-items-center justify-content-center">
-                                {cartQuantity} {/* Hiển thị số sản phẩm trong giỏ hàng */}
-                            </span>                            <div className="cart-text">Giỏ hàng</div>
+                                {cartQuantity}
+                            </span>
+                            <div className="cart-text">Giỏ hàng</div>
                         </div>
                     </div>
                 </div>

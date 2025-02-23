@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; 
 import "./CartPage.css";
-import { GET_CART } from "../../config/ApiConfig";
+import { GET_CART, DELETE_CART_ITEM, CLEAR_CART   } from "../../config/ApiConfig";
 import Header from "../../Components/Header/Header"; // Import Header
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -57,12 +59,75 @@ const CartPage = () => {
     fetchCart();
   }, [navigate]);
 
-  const handleQuantityChange = (id, newQuantity) => {
+  const handleQuantityChange = async (id, newQuantity) => {
     if (newQuantity < 1) return; // Ngăn số lượng về 0
-    const updatedCart = cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: newQuantity } : item
-    );
-    setCartItems(updatedCart);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("Không có token, không thể cập nhật số lượng.");
+        return;
+      }
+
+      const response = await axios.post(
+        `${CLEAR_CART}/update`, // Cập nhật số lượng sản phẩm
+        { productId: id, quantity: newQuantity },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.status === 200) {
+        setCartItems((prevItems) =>
+          prevItems.map((item) =>
+            item.id === id ? { ...item, quantity: newQuantity } : item
+          )
+        );
+        console.log("Cập nhật số lượng sản phẩm thành công.");
+      } else {
+        console.warn("API trả về lỗi:", response);
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật số lượng sản phẩm:", error);
+    }
+  };
+
+  const handleDeleteItem = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("Không có token, không thể xóa sản phẩm.");
+        return;
+      }
+
+      await axios.delete(DELETE_CART_ITEM(id), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setCartItems(cartItems.filter(item => item.id !== id));
+      console.log("Sản phẩm đã bị xóa khỏi giỏ hàng.");
+    } catch (error) {
+      console.error("Lỗi khi xóa sản phẩm:", error);
+    }
+  };
+
+  const handleClearCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("Không có token, không thể xóa giỏ hàng.");
+        return;
+      }
+
+      await axios.delete(CLEAR_CART, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setCartItems([]); // Làm rỗng giỏ hàng
+      console.log("Giỏ hàng đã được xóa.");
+    } catch (error) {
+      console.error("Lỗi khi xóa toàn bộ giỏ hàng:", error);
+    }
   };
 
   const totalPrice = cartItems.reduce(
@@ -70,16 +135,14 @@ const CartPage = () => {
     0
   );
 
-  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
   if (loading) {
     return <div className="cart-loading">Đang tải giỏ hàng...</div>;
   }
-  const handleSelectItem = (id) => {
-    setSelectedItems((prev) =>
-      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
-    );
-  };
+
+
+
+  
+  
 
   return (
     <>
@@ -87,13 +150,18 @@ const CartPage = () => {
     
     <div className="cart-page-container">
         
-      <h2 className="cart-page-title">Giỏ hàng ({totalQuantity} sản phẩm)</h2>
-      <div className="cart-page-content">
+    <h2 className="cart-page-title">Giỏ hàng ({cartItems.length} sản phẩm)</h2>
+    <div className="cart-page-content">
         <div className="cart-page-items">
           <table>
             <thead>
               <tr>
-                <th>Chọn</th>
+              <th>
+                <button className="clear-cart-button" onClick={handleClearCart}>
+                <DeleteForeverIcon />Clear
+               </button>
+              </th>
+
                 <th>Sản phẩm</th>
                 <th>Giá tiền</th>
                 <th>Số lượng</th>
@@ -104,11 +172,7 @@ const CartPage = () => {
               {cartItems.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.includes(item.id)}
-                      onChange={() => handleSelectItem(item.id)}
-                    />
+                    
                   </td>
                   <td className="cart-page-product-info">
                     <img src={`/images/${item.image}`} alt={item.name} />
@@ -116,7 +180,11 @@ const CartPage = () => {
                       <strong>{item.name}</strong>
                       <div className="cart-page-actions"></div>
                       <span className="cart-page-wishlist">♡ Yêu thích</span> |{" "}
-                      <span className="cart-page-remove">✖ Xóa</span>
+                      <span> <DeleteForeverIcon
+                        className="cart-page-delete-icon"
+                        onClick={() => handleDeleteItem(item.id)}
+                        style={{ cursor: "pointer" }}
+                      /></span>
                     </div>
                   </td>
                   <td>

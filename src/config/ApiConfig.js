@@ -30,4 +30,8 @@ export const getProductDetails = (productId) =>
 export const REGISTER_USER = `${BASE_URL}/users/register`;
 export const LOGIN_USER = `${BASE_URL}/users/login`;  // 
 export const GET_CART = `${BASE_URL}/carts`; // Thêm API giỏ hàng
+export const DELETE_CART_ITEM = (productId) => `${BASE_URL}/carts/${productId}`; // xóa sp khoi giỏ hàng 
+export const CLEAR_CART = `${BASE_URL}/carts`; // API xóa toàn bộ giỏ hàng
+
+
 

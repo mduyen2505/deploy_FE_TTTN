@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Footer from "../../Components/Footer/Footer";
 import { ALL_PRODUCTS, SUBCATEGORIES, BRANDS } from "../../config/ApiConfig"; // Import API
 import ProductCard from "../../Components/ProductCard/ProductCard"; // Import giao diện sản phẩm
 import Header from "../../Components/Header/Header"; // Import Header
@@ -102,6 +103,8 @@ const MenuPage = () => {
                     </div>
                 </section>
             </div>
+            <Footer /> 
+
         </div>
     );
 };

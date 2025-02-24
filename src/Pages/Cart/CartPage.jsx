@@ -5,6 +5,7 @@ import "./CartPage.css";
 import { GET_CART, DELETE_CART_ITEM, CLEAR_CART   } from "../../config/ApiConfig";
 import Header from "../../Components/Header/Header"; // Import Header
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Footer from "../../Components/Footer/Footer";
 
 
 const CartPage = () => {
@@ -40,8 +41,8 @@ const CartPage = () => {
               ? product.productId.promotionPrice / (1 - product.productId.discount / 100)
               : null,
             quantity: product.quantity,
-            image: "default-image.png",
-          }));
+            image: product.productId.image
+        }));
 
           setCartItems(formattedCartItems);
         } else {
@@ -231,6 +232,8 @@ const CartPage = () => {
           <button className="cart-page-checkout-button">Tiến hành đặt hàng</button>
         </div>
       </div>
+      <Footer /> 
+
     </div>
     </>
   );

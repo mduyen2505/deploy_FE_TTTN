@@ -5,6 +5,7 @@ import ProductCard from "../../Components/ProductCard/ProductCard";
 import "./Style.css";
 import Header from "../../Components/Header/Header";
 import Filter from "../../Components/Filters/Filters";
+import Footer from "../../Components/Footer/Footer";
 
 
 const SubCategoryPage = () => {
@@ -106,6 +107,8 @@ const SubCategoryPage = () => {
                     </div>
                 </section>
             </div>
+            <Footer /> 
+
         </div>
     );
     

@@ -12,6 +12,7 @@ import ProductsbyBrand from './Pages/ProductsbyBrand/ProductsbyBrand';
 import ProductDetail from './Pages/ProductDetail/ProductDetail';
 import SignUpPage from './Pages/Register/register';
 import CartPage from './Pages/Cart/CartPage';
+import WishlistPage from './Pages/Wishlist/WishlistPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/brand/:brandId" element={<ProductsbyBrand />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />  
 
 
       </Routes>

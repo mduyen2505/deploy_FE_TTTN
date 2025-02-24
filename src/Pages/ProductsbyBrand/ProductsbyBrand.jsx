@@ -4,6 +4,7 @@ import { getProductsbyBrand, getBrandDetails  } from "../../config/ApiConfig";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import "./Style.css";
 import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 
 const ProductsbyBrand = () => {
     const { brandId } = useParams(); // Lấy brandId từ URL
@@ -67,6 +68,8 @@ const ProductsbyBrand = () => {
                     )}
                 </div>
             </div>
+            <Footer /> 
+
         </div>
     );
 };

@@ -4,14 +4,18 @@ import "./ProductDetail.css";
 import Header from "../../Components/Header/Header";
 import { getProductDetails } from "../../config/ApiConfig";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close"; // Icon đóng modal
 import { addToCart } from "../../services/CartService";
+import { addToWishlist, removeFromWishlist, getWishlist } from "../../services/WishlistService";
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
+    const [isFavorite, setIsFavorite] = useState(false);
+
     const [showReviewModal, setShowReviewModal] = useState(false); // Trạng thái hiển thị modal
 
 
@@ -30,8 +34,31 @@ const ProductDetail = () => {
             }
         };
 
+        const fetchWishlist = async () => {
+            const wishlist = await getWishlist();
+            setIsFavorite(wishlist.includes(id)); // Kiểm tra sản phẩm có trong wishlist không
+        };
+
         fetchProduct();
+        fetchWishlist();
     }, [id]);
+
+    const handleWishlistToggle = async () => {
+        if (!localStorage.getItem("token")) {
+            alert("Vui lòng đăng nhập để thêm vào yêu thích!");
+            return;
+        }
+
+        setIsFavorite(!isFavorite); // Cập nhật UI ngay lập tức
+
+        if (!isFavorite) {
+            const success = await addToWishlist(id);
+            if (!success) setIsFavorite(false); // Hoàn tác nếu thất bại
+        } else {
+            const success = await removeFromWishlist(id);
+            if (!success) setIsFavorite(true); // Hoàn tác nếu thất bại
+        }
+    };
 
     if (loading) return <p>Đang tải sản phẩm...</p>;
     if (!product) return <p>Sản phẩm không tồn tại.</p>;
@@ -75,8 +102,8 @@ const ProductDetail = () => {
                     {/* Nút thêm vào giỏ hàng + icon trái tim (cùng 1 hàng) */}
                     <div className="product-detail-actions">
                         <button className="product-detail-add-to-cart"onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
-                        <button className="product-detail-favorite">
-                            <FavoriteBorderOutlinedIcon />
+                        <button className="product-detail-favorite" onClick={handleWishlistToggle}>
+                            {isFavorite ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderOutlinedIcon />}
                         </button>
                     </div>
                 </div>

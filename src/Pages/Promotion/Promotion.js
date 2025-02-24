@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getCoupons, ALL_PRODUCTS } from "../../config/ApiConfig";
 import ProductCard from "../../Components/ProductCard/ProductCard";
 import Header from "../../Components/Header/Header";
+import Footer from "../../Components/Footer/Footer";
 import "./Style.css";
 
 const Promo = () => {
@@ -124,6 +125,8 @@ const Promo = () => {
                     </button>
                 </div>
             </div>
+            <Footer /> 
+
         </div>
     );
 };

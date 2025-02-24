@@ -71,10 +71,20 @@ const Header = () => {
             setIsDropdownOpen((prev) => !prev);
         }
     };
+    const handleWishlistClick = () => {
+        if (isLoggedIn) {
+            navigate('/wishlist'); 
+        } else {
+            alert("Vui lòng đăng nhập để xem danh sách yêu thích!");
+            navigate('/login');
+        }
+    };
+    
 
     const handleLogout = () => {
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        localStorage.removeItem("wishlist");
         setIsLoggedIn(false);
         setUsername("");
         setCartQuantity(0);
@@ -134,7 +144,7 @@ const Header = () => {
                                     <ul className="dropdownMenu">
                                         <li><Button><Person2OutlinedIcon /> My Account</Button></li>
                                         <li><Button><RoomOutlinedIcon /> Order Tracking</Button></li>
-                                        <li><Button><FavoriteBorderOutlinedIcon /> My Wishlist</Button></li>
+                                        <li><Button onClick={handleWishlistClick}><FavoriteBorderOutlinedIcon /> My Wishlist</Button></li>
                                         <li><Button><SettingsOutlinedIcon /> Setting</Button></li>
                                         <li><Button onClick={handleLogout}><LogoutOutlinedIcon /> Sign Out</Button></li>
                                     </ul>

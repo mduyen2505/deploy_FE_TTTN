@@ -37,7 +37,9 @@ const CartPage = () => {
               ? product.productId.promotionPrice / (1 - product.productId.discount / 100)
               : null,
             quantity: product.quantity,
-            image: product.productId.image
+            image: product.productId.image.startsWith("http")
+            ? product.productId.image
+            : `http://localhost:3000/images/${product.productId.image}`
           }));
 
           setCartItems(formattedCartItems);
@@ -164,7 +166,13 @@ const CartPage = () => {
                   <tr key={item.id}>
                     <td></td>
                     <td className="cart-page-product-info">
-                      <img src={`/images/${item.image}`} alt={item.name} />
+                    <img 
+    src={item.image} 
+    alt={item.name} 
+    className="cart-product-image"
+/>
+
+
                       <div>
                         <strong>{item.name}</strong>
                         <div className="cart-page-actions"></div>

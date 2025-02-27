@@ -74,11 +74,20 @@ const AccountPage = () => {
         return;
       }
 
+      
       const response = await axios.put(
-        UPDATE_USER_INFO(user.userId), // ✅ Gọi API từ `ApiConfig.js`
-        { address: user.address }, // ✅ Chỉ gửi địa chỉ để cập nhật
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+        UPDATE_USER_INFO,  // Không cần truyền userId trên URL
+        {
+          userId: user.userId, 
+          username: user.username, // ✅ Cập nhật cả username
+          phoneNumber: user.phoneNumber, // ✅ Cập nhật số điện thoại
+          address: user.address, // ✅ Cập nhật địa chỉ
+          email: user.email // ✅ Nếu muốn giữ email
+        },
+        {
+            headers: { Authorization: `Bearer ${token}` },
+        }
+    );
 
       if (response.status === 200) {
         alert("Cập nhật địa chỉ thành công!");
@@ -114,11 +123,11 @@ const AccountPage = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Name</label>
-                <input type="text" name="username" value={user.username} disabled className="input-field" />
+                <input type="text" name="username" value={user.username} onChange={handleChange} className="input-field" />
               </div>
               <div className="form-group">
                 <label>Phone Number</label>
-                <input type="text" name="phoneNumber" value={user.phoneNumber} disabled className="input-field" />
+                <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className="input-field" />
               </div>
             </div>
 

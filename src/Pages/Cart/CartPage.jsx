@@ -29,6 +29,7 @@ const CartPage = () => {
         console.log("Dữ liệu giỏ hàng từ API:", response.data);
 
         if (response.data && response.data.products) {
+          localStorage.setItem("cart", JSON.stringify({ _id: response.data._id }));
           const formattedCartItems = response.data.products.map((product) => ({
             id: product.productId._id,
             name: product.productId.name,
@@ -135,6 +136,50 @@ const CartPage = () => {
     0
   );
 
+  // ✅ Hàm xử lý đặt hàng
+  const handleCheckout = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+        alert("Vui lòng đăng nhập để đặt hàng!");
+        navigate("/login");
+        return;
+    }
+
+    const storedCart = JSON.parse(localStorage.getItem("cart")); // Lưu giỏ hàng vào localStorage khi fetch
+    const cartId = storedCart?._id || null; // Lấy cartId từ giỏ hàng
+
+    if (!cartId) {
+        alert("Không tìm thấy giỏ hàng. Vui lòng thử lại.");
+        return;
+    }
+    const productIdList = cartItems.map(item => item.id);
+
+    console.log("📦 Dữ liệu gửi sang OrderPage.js:", {
+        cartId,
+        productId: productIdList,
+        totalPrice,
+        shippingAddress: user.address || "",
+        name: user.username || "",
+        phone: user.phoneNumber || "",
+        email: user.email || "",
+        voucherCode: ""
+    });
+
+    // ✅ Chuyển dữ liệu sang `OrderPage`
+    navigate("/order", {
+      state: {
+        cartId,
+        productId: cartItems.map(item => item.id),
+        totalPrice,
+        shippingAddress: user.address || "",
+        name: user.username || "",
+        phone: user.phoneNumber || "",
+        email: user.email || "",
+        voucherCode: ""
+      }
+    });
+  };
+
   if (loading) {
     return <div className="cart-loading">Đang tải giỏ hàng...</div>;
   }
@@ -223,8 +268,9 @@ const CartPage = () => {
             <h3>Hóa đơn của bạn</h3>
             <p>Tạm tính: <span>{totalPrice.toLocaleString()} đ</span></p>
             <p className="cart-page-total">Tổng cộng: <span>{totalPrice.toLocaleString()} đ</span></p>
-            <button className="cart-page-checkout-button">Tiến hành đặt hàng</button>
-          </div>
+            <button className="cart-page-checkout-button" onClick={handleCheckout}>
+            Tiến hành đặt hàng
+          </button>          </div>
         </div>
         <Footer />
       </div>

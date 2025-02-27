@@ -99,6 +99,14 @@ const Header = () => {
             navigate('/login');
         }
     };
+    const handleMyAccount = () => {
+        if (isLoggedIn) {
+            navigate('/account'); 
+        } else {
+            alert("Vui lòng đăng nhập để xem danh sách yêu thích!");
+            navigate('/login');
+        }
+    };
 
     return (
         <>
@@ -142,7 +150,7 @@ const Header = () => {
 
                                 {isLoggedIn && isDropdownOpen && (
                                     <ul className="dropdownMenu">
-                                        <li><Button><Person2OutlinedIcon /> My Account</Button></li>
+                                        <li><Button onClick={handleMyAccount} ><Person2OutlinedIcon /> My Account</Button></li>
                                         <li><Button><RoomOutlinedIcon /> Order Tracking</Button></li>
                                         <li><Button onClick={handleWishlistClick}><FavoriteBorderOutlinedIcon /> My Wishlist</Button></li>
                                         <li><Button><SettingsOutlinedIcon /> Setting</Button></li>

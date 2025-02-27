@@ -34,7 +34,6 @@ const LoginPage = () => {
     try {
         const response = await axios.post(LOGIN_USER, {
             email: formData.email,
-            phoneNumber: formData.phoneNumber,
             password: formData.password
         });
 
@@ -42,7 +41,7 @@ const LoginPage = () => {
             const user = {
                 username: response.data.username,
                 email: response.data.email,
-                phoneNumber: response.data.phoneNumber,
+                phoneNumber: response.data.phoneNumber || "",
                 token: response.data.token, // Lưu token vào localStorage
             };
 

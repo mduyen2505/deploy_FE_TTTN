@@ -13,7 +13,6 @@ const SignUpPage = () => {
     const [formData, setFormData] = useState({
         username: "",
         email: "",
-        phoneNumber: "",
         password: "",
         confirmPassword: ""
     });
@@ -23,11 +22,13 @@ const SignUpPage = () => {
 
     // Xử lý khi nhập dữ liệu vào input
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
+        setFormData((prev) => {
+            const newData = { ...prev, [e.target.name]: e.target.value };
+            console.log("Updating state:", newData); // Kiểm tra giá trị cập nhật
+            return newData;
         });
     };
+    
 
     // Xử lý đăng ký người dùng
     const handleSubmit = async (e) => {
@@ -35,7 +36,14 @@ const SignUpPage = () => {
         setError("");
         setSuccess("");
     
-        if (formData.password !== formData.confirmPassword) {
+        console.log("Form Data:", formData); // Debug kiểm tra giá trị nhập vào
+    
+        if (!formData.password || !formData.confirmPassword) {
+            setError("Vui lòng nhập đầy đủ mật khẩu!");
+            return;
+        }
+    
+        if (formData.password.trim() !== formData.confirmPassword.trim()) {
             setError("Mật khẩu nhập lại không khớp!");
             return;
         }
@@ -44,26 +52,15 @@ const SignUpPage = () => {
             const response = await axios.post(REGISTER_USER, {
                 username: formData.username,
                 email: formData.email,
-                phoneNumber: formData.phoneNumber,
                 password: formData.password,
+                resPassword: formData.confirmPassword,
             });
     
-            if (response.data && response.data.token) {
-                // Lưu user và token vào localStorage
-                const user = {
-                    username: response.data.username,
-                    email: response.data.email,
-                    phoneNumber: response.data.phoneNumber,
-                    token: response.data.token,
-                };
-    
-                localStorage.setItem("user", JSON.stringify(user));
-                localStorage.setItem("token", response.data.token);
-    
-                setSuccess("Đăng ký thành công! Đang chuyển hướng...");
-                setTimeout(() => navigate("/"), 1000);
+            if (response.data && response.data.user) {
+                setSuccess("Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...");
+                setTimeout(() => navigate("/login"), 1000);
             } else {
-                setError("Lỗi: Không nhận được token từ server!");
+                setError("Lỗi: Đăng ký không thành công!");
             }
         } catch (error) {
             setError(error.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại!");
@@ -96,10 +93,7 @@ const SignUpPage = () => {
                             <i className="fas fa-envelope"></i>
                             <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
                         </div>
-                        <div className="register-input-field">
-                            <i className="fas fa-phone"></i>
-                            <input type="text" name="phoneNumber" placeholder="Số điện thoại" onChange={handleChange} required />
-                        </div>
+                        
                         <div className="register-input-field">
                             <i className="fas fa-lock"></i>
                             <input type="password" name="password" placeholder="Mật khẩu" onChange={handleChange} required />

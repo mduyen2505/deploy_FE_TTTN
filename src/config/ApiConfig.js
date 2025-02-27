@@ -36,6 +36,9 @@ export const CLEAR_CART = `${BASE_URL}/carts`; // API xóa toàn bộ giỏ hàn
 export const ORDER_API = `${BASE_URL}/orders`;
 export const UPDATE_CART = `${BASE_URL}/carts/update`;
 
+export const GET_USER_INFO = `${BASE_URL}/users`; // API lấy thông tin user
+export const UPDATE_USER_INFO = (userId) => `${BASE_URL}/users/${userId}`; // API cập nhật user
+
 
 
 

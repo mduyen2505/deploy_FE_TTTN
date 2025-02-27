@@ -169,7 +169,7 @@ const CartPage = () => {
     navigate("/order", {
       state: {
         cartId,
-        productId: cartItems.map(item => item.id),
+        productList: cartItems.map(item => ({ id: item.id, name: item.name })), 
         totalPrice,
         shippingAddress: user.address || "",
         name: user.username || "",

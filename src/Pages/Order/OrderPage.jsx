@@ -4,13 +4,15 @@ import Modal from "./ModalOrder";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ORDER_API } from "../../config/ApiConfig"; 
+import { GET_CART } from "../../config/ApiConfig";
 
 const OrderPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  
+  const [products, setProducts] = useState({});
+
   const [orderData, setOrderData] = useState({
     cartId: "",
     totalPrice: 0,
@@ -21,6 +23,28 @@ const OrderPage = () => {
     email: "",
     voucherCode: "",
   });
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(GET_CART, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+  
+        if (response.data && response.data.products) {
+          const productMap = {};
+          response.data.products.forEach(product => {
+            productMap[product.productId._id] = product.productId.name;
+          });
+          setProducts(productMap);
+        }
+      } catch (error) {
+        console.error("Lỗi khi lấy thông tin sản phẩm:", error);
+      }
+    };
+  
+    fetchProductDetails();
+  }, []);
+  
 
   useEffect(() => {
     if (!location.state) {
@@ -43,6 +67,9 @@ const OrderPage = () => {
     });
 
   }, [location.state, navigate]);
+  const shippingFee = orderData.totalPrice > 500000 ? 0 : 30000; // 🚀 Miễn phí ship nếu đơn > 500k
+  const vat = Math.round(orderData.totalPrice * 0.1); // 🚀 VAT = 10% của totalPrice
+  const orderTotal = orderData.totalPrice + shippingFee + vat; // 🚀 Tổng tiền
 
   const handlePlaceOrder = async () => {
     if (!orderData.cartId || !orderData.productId.length) {
@@ -146,9 +173,10 @@ const OrderPage = () => {
         {/* Thông tin kiện hàng */}
         <div className="order-box order-shipping-info">
         <h2 className="order-title">Chi tiết đơn hàng</h2>
-          {orderData.productId.map((id, index) => (
-            <p key={index}>Sản phẩm ID: {id}</p>
-          ))}
+        {orderData.productId.map((id, index) => (
+  <p key={index}>{index + 1}. {products[id] || "Đang tải..."}</p>
+))}
+
         </div>
       </div>
 
@@ -161,11 +189,14 @@ const OrderPage = () => {
         <div className="order-summary">
         <p>Tạm tính: <span>{orderData.totalPrice.toLocaleString()}₫</span></p>  
           <p>Giảm giá: <span>-0₫</span></p>
-          <p>Phí vận chuyển: <span>{orderData?.shippingFee ? orderData.shippingFee.toLocaleString() : "0"}₫</span></p>
+          <p>Phí vận chuyển: 
+            <span> {shippingFee > 0 ? `${shippingFee.toLocaleString()}₫` : "Miễn phí"}</span>
+          </p>
+          <p>VAT (10%): <span>{vat.toLocaleString()}₫</span></p>
 
 
           <p className="order-total">
-          Thành tiền (Đã VAT): <span className="order-price">{orderData.totalPrice.toLocaleString()}₫</span>
+            Thành tiền (Đã VAT): <span className="order-price">{orderTotal.toLocaleString()}₫</span>
           
           </p>
           <button className="order-btn" onClick={handlePlaceOrder}>

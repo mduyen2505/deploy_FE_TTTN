@@ -5,6 +5,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ORDER_API } from "../../config/ApiConfig"; 
 import { GET_CART } from "../../config/ApiConfig";
+import Logo from "../../assets/images/logo.png"; // Import logo
 
 const OrderPage = () => {
   const location = useLocation();
@@ -47,17 +48,18 @@ const OrderPage = () => {
   
 
   useEffect(() => {
-    if (!location.state) {
-      alert("Dữ liệu đặt hàng không hợp lệ! Quay lại giỏ hàng.");
-      navigate("/cart");
-      return;
-    }
     console.log("📦 Dữ liệu nhận từ CartPage:", location.state);
+
+    if (!location.state) {
+        alert("Dữ liệu đặt hàng không hợp lệ! Quay lại giỏ hàng.");
+        navigate("/cart");
+        return;
+    }
 
 
     setOrderData({
       cartId: location.state.cartId || "",  // ✅ Nhận cartId từ CartPage
-      productId: location.state.productId || [],
+      productList: location.state.productList || [],
       totalPrice: location.state.totalPrice || 0,
       shippingAddress: location.state.shippingAddress || "",
       name: location.state.name || "",
@@ -72,7 +74,7 @@ const OrderPage = () => {
   const orderTotal = orderData.totalPrice + shippingFee + vat; // 🚀 Tổng tiền
 
   const handlePlaceOrder = async () => {
-    if (!orderData.cartId || !orderData.productId.length) {
+    if (!orderData.cartId || !orderData.productList.length) {
         alert("Giỏ hàng của bạn trống hoặc có lỗi với đơn hàng!");
         return;
     }
@@ -111,53 +113,68 @@ const OrderPage = () => {
 
 
   return (
+    
     <div className="order-container">
-      <div className="order-main-content">
-        {/* Thông tin nhận hàng */}
-        <div className="order-box order-address-box">
-          <h2 className="order-title">Thông tin nhận hàng</h2>
-          
-          <div className="order-input-group">
-            <label>Tên:</label>
-            <input 
-              type="text" 
-              value={orderData.name} 
-              onChange={(e) => setOrderData({ ...orderData, name: e.target.value })} 
-              placeholder="Nhập tên người nhận"
-              required
-            />
-          </div>
-          <div className="order-input-group">
-            <label>Số điện thoại:</label>
-            <input 
-              type="text" 
-              value={orderData.phone} 
-              onChange={(e) => setOrderData({ ...orderData, phone: e.target.value })} 
-              placeholder="Nhập số điện thoại"
-              required
-            />
-          </div>
-          <div className="order-input-group">
-            <label>Email:</label>
-            <input 
-              type="email" 
-              value={orderData.email} 
-              onChange={(e) => setOrderData({ ...orderData, email: e.target.value })} 
-              placeholder="Nhập email"
-              required
-            />
-          </div>
-          <div className="order-input-group">
-            <label>Địa chỉ:</label>
-            <input 
-              type="text" 
-              value={orderData.shippingAddress} 
-              onChange={(e) => setOrderData({ ...orderData, shippingAddress: e.target.value })} 
-              placeholder="Nhập địa chỉ giao hàng"
-              required
-            />
-          </div>
+       <div className="order-header">
+        <div className="order-header-content">
+          <img src={Logo} alt="Logo" className="order-header-logo" />
+          <span className="order-header-title">Thanh toán</span>
         </div>
+      </div>
+      
+      <div className="order-main-content">
+       {/* Thông tin nhận hàng */}
+<div className="order-box order-address-box">
+  <h2 className="order-title">Thông tin nhận hàng</h2>
+
+  {/* Hàng ngang chứa Tên & Số điện thoại */}
+  <div className="order-input-row">
+    <div className="order-input-group">
+      <h2 className="order-title">Tên</h2>
+      <input 
+        type="text" 
+        value={orderData.name} 
+        onChange={(e) => setOrderData({ ...orderData, name: e.target.value })} 
+        placeholder="Nhập tên người nhận"
+        required
+      />
+    </div>
+    <div className="order-input-group">
+      <h2 className="order-title">Số điện thoại</h2>
+      <input 
+        type="text" 
+        value={orderData.phone} 
+        onChange={(e) => setOrderData({ ...orderData, phone: e.target.value })} 
+        placeholder="Nhập số điện thoại"
+        required
+      />
+    </div>
+  </div>
+
+  {/* Hàng dọc chứa Email & Địa chỉ */}
+  <div className="order-input-group">
+    <h2 className="order-title">Email</h2>
+    <input 
+      type="email" 
+      value={orderData.email} 
+      onChange={(e) => setOrderData({ ...orderData, email: e.target.value })} 
+      placeholder="Nhập email"
+      required
+    />
+  </div>
+
+  <div className="order-input-group">
+    <h2 className="order-title">Địa chỉ</h2>
+    <input 
+      type="text" 
+      value={orderData.shippingAddress} 
+      onChange={(e) => setOrderData({ ...orderData, shippingAddress: e.target.value })} 
+      placeholder="Nhập địa chỉ giao hàng"
+      required
+    />
+  </div>
+</div>
+
 
         {/* Mã giảm giá */}
         <div className="order-box">
@@ -173,9 +190,11 @@ const OrderPage = () => {
         {/* Thông tin kiện hàng */}
         <div className="order-box order-shipping-info">
         <h2 className="order-title">Chi tiết đơn hàng</h2>
-        {orderData.productId.map((id, index) => (
-  <p key={index}>{index + 1}. {products[id] || "Đang tải..."}</p>
+        {(orderData.productList || []).map((item, index) => (
+  <p key={index}>{index + 1}. {item.name}</p>
 ))}
+
+
 
         </div>
       </div>

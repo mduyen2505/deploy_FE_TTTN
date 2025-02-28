@@ -1,34 +1,65 @@
-/* OrderPage.css */
+/* Container chính */
 .order-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Căn giữa nội dung */
   align-items: flex-start;
+  gap: 30px; /* Khoảng cách giữa nội dung chính và thanh toán */
   padding: 20px;
   background-color: #f5f5f5;
+  flex-wrap: wrap; /* Để các phần tự động xuống hàng khi không đủ chỗ */
 }
 
-/* Nội dung chính sẽ nằm bên trái */
+/* Nội dung chính bên trái */
 .order-main-content {
   width: 55%;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-left: 100px;
   margin-top: 30px;
 }
 
-/* Khung thanh toán sẽ nằm bên phải */
+/* Khung thanh toán bên phải */
 .order-payment-box {
-  width: 25%;
+  width: 30%;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   height: fit-content;
   position: sticky;
-  top: 20px; /* Giữ cố định khi cuộn */
-  right: 50px;
+  top: 20px;
   margin-top: 50px;
+}
+
+/* Header của trang đặt hàng */
+.order-header {
+  background-color: #ff9eb5; /* Màu xanh giống hình */
+  width: 100%; /* Chiều rộng full trang */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Căn logo và tiêu đề */
+  box-sizing: border-box;
+  height: 130px;
+  margin-top: -15px;
+}
+
+.order-header-content {
+  display: flex;
+  align-items: center;
+  max-width: 1400px; /* Để nội dung header không quá dài trên màn hình lớn */
+  margin: 0 auto;
+  width: 100%;
+}
+
+.order-header-logo {
+  height: 250px; 
+  width: 250px;/* Điều chỉnh chiều cao logo */
+}
+
+.order-header-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .order-box {
@@ -38,13 +69,46 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
 }
-.order-input-group{
+.order-input-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.order-input-group {
   background-color: #fff;
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  
+  flex: 1; /* Chia đều không gian */
+  margin-bottom: 5px;
+
+}
+.order-input-group h2 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Định dạng input */
+.order-input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+
+.order-input-group input:focus {
+  outline: none;
+  border-color: #ff6f91;
+  background-color: white;
+}
+.order-box input:focus{
+  outline: none;
+  border-color: #ff6f91;
+  background-color: white;
 }
 
 
@@ -137,5 +201,27 @@
 .order-small-text {
   font-size: 12px;
   margin-top: 10px;
+}
+/* Responsive */
+@media (max-width: 1024px) {
+  .order-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .order-main-content {
+    width: 90%;
+  }
+
+  .order-payment-box {
+    width: 90%;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .order-input-row {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 

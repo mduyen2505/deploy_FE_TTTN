@@ -152,11 +152,11 @@ const CartPage = () => {
         alert("Không tìm thấy giỏ hàng. Vui lòng thử lại.");
         return;
     }
-    const productIdList = cartItems.map(item => item.id);
+    const productList = cartItems.map(item => ({ id: item.id, name: item.name })); // ✅ Sử dụng `productList`
 
     console.log("📦 Dữ liệu gửi sang OrderPage.js:", {
         cartId,
-        productId: productIdList,
+        productList,
         totalPrice,
         shippingAddress: user.address || "",
         name: user.username || "",
@@ -169,7 +169,7 @@ const CartPage = () => {
     navigate("/order", {
       state: {
         cartId,
-        productList: cartItems.map(item => ({ id: item.id, name: item.name })), 
+        productList,
         totalPrice,
         shippingAddress: user.address || "",
         name: user.username || "",

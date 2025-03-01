@@ -39,6 +39,9 @@ export const UPDATE_CART = `${BASE_URL}/carts/update`;
 export const GET_USER_INFO = `${BASE_URL}/users`; // API lấy thông tin user
 export const UPDATE_USER_INFO = `${BASE_URL}/users`; // API cập nhật user (không cần userId trên URL)
 
+export const COUPONS_API = `${BASE_URL}/coupons`;
+export const CHECK_COUPON_API = `${BASE_URL}/coupons/check-coupon`;
+
 
 
 

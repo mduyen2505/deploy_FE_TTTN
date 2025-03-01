@@ -8,7 +8,11 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import { addToCart } from "../../services/CartService";
-import { addToWishlist, removeFromWishlist, getWishlist } from "../../services/WishlistService";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  getWishlist,
+} from "../../services/WishlistService";
 
 const ProductCard = ({ product }) => {
   const navigate = useNavigate();
@@ -43,30 +47,45 @@ const ProductCard = ({ product }) => {
     if (!isLoggedIn) {
       alert("Vui lòng đăng nhập để thêm vào yêu thích!");
       return;
-  }
+    }
 
-  setIsFavorite(!isFavorite); // Cập nhật UI ngay lập tức để tránh độ trễ
+    setIsFavorite(!isFavorite); // Cập nhật UI ngay lập tức để tránh độ trễ
 
-  if (!isFavorite) {
-    await addToWishlist(product._id);
-  } else {
-    await removeFromWishlist(product._id);
-  }
-
-};
-
+    if (!isFavorite) {
+      await addToWishlist(product._id);
+    } else {
+      await removeFromWishlist(product._id);
+    }
+  };
 
   return (
-    <div className="product-card" onClick={() => navigate(`/product/${product._id}`)}>
-      {product.discount && <span className="discount-tag">-{product.discount}%</span>}
+    <div
+      className="product-card"
+      onClick={() => navigate(`/product/${product._id}`)}
+    >
+      {product.discount && (
+        <span className="discount-tag">-{product.discount}%</span>
+      )}
 
       {/* Icon yêu thích */}
-      <div className="favorite-icon" role="button" onClick={handleWishlistToggle}>
-        {isFavorite ? <FavoriteIcon style={{ color: "red" }} /> : <FavoriteBorderOutlinedIcon />}
+      <div
+        className="favorite-icon"
+        role="button"
+        onClick={handleWishlistToggle}
+      >
+        {isFavorite ? (
+          <FavoriteIcon style={{ color: "red" }} />
+        ) : (
+          <FavoriteBorderOutlinedIcon />
+        )}
       </div>
 
       <img
-        src={product.image.startsWith("http") ? product.image : `http://localhost:3000/images/${product.image}`}
+        src={
+          product.image.startsWith("http")
+            ? product.image
+            : `http://localhost:3000/images/${product.image}`
+        }
         alt={product.name}
         className="product-image"
       />
@@ -84,15 +103,23 @@ const ProductCard = ({ product }) => {
         <div className="price-container">
           {product.discount > 0 ? (
             <>
-              <span className="original-price">{product.price.toLocaleString()}₫</span>
-              <span className="discounted-price">{product.promotionPrice.toLocaleString()}₫</span>
+              <span className="original-price">
+                {product.price.toLocaleString()}₫
+              </span>
+              <span className="discounted-price">
+                {product.promotionPrice.toLocaleString()}₫
+              </span>
             </>
           ) : (
-            <span className="discounted-price">{product.price.toLocaleString()}₫</span>
+            <span className="discounted-price">
+              {product.price.toLocaleString()}₫
+            </span>
           )}
         </div>
 
-        <button className="add-to-bag" onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
+        <button className="add-to-bag" onClick={() => addToCart(product._id)}>
+          Thêm vào giỏ
+        </button>
       </div>
     </div>
   );

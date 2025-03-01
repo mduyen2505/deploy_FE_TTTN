@@ -225,3 +225,126 @@
   }
 }
 
+
+/* Container của input & nút áp dụng */
+.voucher-input-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.order-input-field {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.order-input-field:focus {
+  border-color: #ff758c;
+}
+
+/* Nút Áp dụng */
+.apply-voucher-btn {
+  background-color: #ff758c;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.apply-voucher-btn:hover {
+  background-color: #e65b72;
+}
+
+/* Danh sách voucher */
+.voucher-list {
+  margin-top: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.voucher-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.voucher-list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.voucher-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+  transition: 0.3s;
+}
+
+.voucher-item:hover {
+  background: #f1f1f1;
+}
+
+.voucher-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.voucher-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+.voucher-description {
+  font-size: 14px;
+  color: #777;
+}
+
+.voucher-discount {
+  font-size: 14px;
+  color: #e44d26;
+  font-weight: bold;
+}
+
+.use-voucher-btn {
+  background: #10cd42;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.use-voucher-btn:hover {
+  background: #127d2e;
+}
+
+.no-voucher {
+  text-align: center;
+  color: #777;
+}
+

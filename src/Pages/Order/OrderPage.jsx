@@ -13,6 +13,9 @@ const OrderPage = () => {
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [products, setProducts] = useState({});
+  const [vouchers, setVouchers] = useState([]);
+  const [voucherInfo, setVoucherInfo] = useState(null);
+  const [showVoucherList, setShowVoucherList] = useState(false);
 
   const [orderData, setOrderData] = useState({
     cartId: "",
@@ -56,6 +59,75 @@ const OrderPage = () => {
     fetchProductDetails();
   }, []);
 
+  const fetchVouchers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/api/coupons");
+      if (response.data.status === "OK") {
+        setVouchers(response.data.data);
+      }
+    } catch (error) {
+      console.error("Lỗi khi lấy danh sách voucher:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVouchers();
+  }, []);
+
+  const checkVoucher = async () => {
+    if (!orderData.voucherCode.trim()) {
+      alert("Vui lòng nhập mã giảm giá!");
+      return;
+    }
+
+    try {
+      console.log("📢 Đang kiểm tra mã giảm giá:", orderData.voucherCode);
+
+      const response = await axios.post(
+        "http://localhost:3000/api/coupons/check-coupon",
+        {
+          name: orderData.voucherCode,
+          orderTotal: orderTotal,
+        }
+      );
+
+      console.log("📢 Phản hồi API kiểm tra mã giảm giá:", response.data);
+
+      if (response.data && response.data.discount) {
+        const currentDate = new Date();
+            const expiryDate = new Date(response.data.expiry);
+
+            // Kiểm tra nếu mã đã hết hạn
+            if (expiryDate < currentDate) {
+                alert("❌ Mã giảm giá đã hết hạn!");
+                setVoucherInfo(null);
+                return;
+            }
+        const discountAmount = Math.round(
+          orderTotal * (response.data.discount / 100)
+        ); // Tính số tiền được giảm
+        const newTotal = orderTotal - discountAmount; // Cập nhật tổng tiền mới
+
+        setVoucherInfo({
+          ...response.data,
+          discountAmount, // Lưu số tiền giảm
+          newTotal, // Lưu tổng tiền mới sau khi giảm
+        });
+
+        alert(`✅ Mã hợp lệ! ${response.data.message}`);
+      } else {
+        setVoucherInfo(null);
+        alert("❌ Mã giảm giá không hợp lệ hoặc đã hết hạn!");
+      }
+    } catch (error) {
+      console.error(
+        "❌ Lỗi khi kiểm tra mã giảm giá:",
+        error.response?.data || error.message
+      );
+      alert("❌ Không thể kiểm tra mã giảm giá. Vui lòng thử lại!");
+    }
+  };
+
   useEffect(() => {
     console.log("📦 Dữ liệu nhận từ CartPage:", location.state);
 
@@ -76,9 +148,9 @@ const OrderPage = () => {
       voucherCode: location.state.voucherCode || "",
     });
   }, [location.state, navigate]);
-  const shippingFee = orderData.totalPrice > 500000 ? 0 : 30000; // 🚀 Miễn phí ship nếu đơn > 500k
-  const vat = Math.round(orderData.totalPrice * 0.1); // 🚀 VAT = 10% của totalPrice
-  const orderTotal = orderData.totalPrice + shippingFee + vat; // 🚀 Tổng tiền
+  const shippingFee = orderData.totalPrice > 500000 ? 0 : 30000;
+  const vat = Math.round(orderData.totalPrice * 0.1);
+  const orderTotal = orderData.totalPrice + shippingFee + vat;
 
   const handlePlaceOrder = async () => {
     if (!orderData.cartId || !orderData.productList.length) {
@@ -199,19 +271,57 @@ const OrderPage = () => {
           </div>
         </div>
 
-        {/* Mã giảm giá */}
-        <div className="order-box">
-          <h2 className="order-title">Mã giảm giá</h2>
-          <input
+       {/* Mã giảm giá */}
+<div className="order-box">
+    <h2 className="order-title">Mã giảm giá</h2>
+
+    {/* Ô nhập mã + nút áp dụng */}
+    <div className="voucher-input-container">
+        <input
             type="text"
             placeholder="Nhập mã giảm giá"
             value={orderData.voucherCode}
-            onChange={(e) =>
-              setOrderData({ ...orderData, voucherCode: e.target.value })
-            }
+            onChange={(e) => setOrderData({ ...orderData, voucherCode: e.target.value })}
+            onFocus={() => setShowVoucherList(true)} // Khi nhấp vào input, hiển thị danh sách voucher
             className="order-input-field"
-          />
+        />
+        <button className="apply-voucher-btn" onClick={checkVoucher}>
+            Áp dụng
+        </button>
+    </div>
+
+    {/* Hiển thị danh sách voucher khi showVoucherList = true */}
+    {showVoucherList && (
+        <div className="voucher-list">
+            {vouchers.length > 0 ? (
+                <ul className="voucher-list-items">
+                    {vouchers.map((voucher) => (
+                        <li key={voucher._id} className="voucher-item">
+                            <div className="voucher-info">
+                                <span className="voucher-name">{voucher.name}</span>
+                                <span className="voucher-description">{voucher.description}</span>
+                                <span className="voucher-discount">🔖 Giảm {voucher.discount}%</span>
+                            </div>
+                            <button
+                                className="use-voucher-btn"
+                                onClick={() => {
+                                    setOrderData({ ...orderData, voucherCode: voucher.name });
+                                    setShowVoucherList(false); // Ẩn danh sách khi chọn mã
+                                }}
+                            >
+                                Dùng mã
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p className="no-voucher">Không có mã giảm giá nào khả dụng.</p>
+            )}
         </div>
+    )}
+</div>
+
+
         {/* Thông tin kiện hàng */}
         <div className="order-box order-shipping-info">
           <h2 className="order-title">Chi tiết đơn hàng</h2>
@@ -231,9 +341,17 @@ const OrderPage = () => {
           <p>
             Tạm tính: <span>{orderData.totalPrice.toLocaleString()}₫</span>
           </p>
+
+          {/* Hiển thị giảm giá nếu có */}
           <p>
-            Giảm giá: <span>-0₫</span>
+            Giảm giá:
+            <span>
+              {voucherInfo
+                ? `-${voucherInfo.discountAmount.toLocaleString()}₫`
+                : "-0₫"}
+            </span>
           </p>
+
           <p>
             Phí vận chuyển:
             <span>
@@ -247,10 +365,17 @@ const OrderPage = () => {
             VAT (10%): <span>{vat.toLocaleString()}₫</span>
           </p>
 
+          {/* Cập nhật lại tổng tiền sau giảm giá */}
           <p className="order-total">
-            Thành tiền (Đã VAT):{" "}
-            <span className="order-price">{orderTotal.toLocaleString()}₫</span>
+            Thành tiền (Đã VAT):
+            <span className="order-price">
+              {voucherInfo
+                ? voucherInfo.newTotal.toLocaleString()
+                : orderTotal.toLocaleString()}
+              ₫
+            </span>
           </p>
+
           <button className="order-btn" onClick={handlePlaceOrder}>
             Đặt hàng
           </button>

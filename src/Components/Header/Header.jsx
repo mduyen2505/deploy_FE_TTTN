@@ -25,19 +25,34 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Kiểm tra đăng nhập khi component mount
+        checkLoginStatus();
+        if (localStorage.getItem("token")) {
+            fetchCartQuantity();
+        }
+
+        // ✅ Theo dõi thay đổi trong localStorage
+        const handleStorageChange = () => {
+            checkLoginStatus();
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+
+    }, []);
+    const checkLoginStatus = () => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
             setIsLoggedIn(true);
             setUsername(parsedUser.username);
+        } else {
+            setIsLoggedIn(false);
+            setUsername("");
         }
-
-        // Gọi API lấy số lượng giỏ hàng nếu đã đăng nhập
-        if (localStorage.getItem("token")) {
-            fetchCartQuantity();
-        }
-    }, []);
+    };
 
     const fetchCartQuantity = async () => {
         try {
@@ -89,6 +104,7 @@ const Header = () => {
         setUsername("");
         setCartQuantity(0);
         navigate("/");
+        window.dispatchEvent(new Event("storage"));
     };
 
     const handleCartClick = () => {
@@ -141,11 +157,12 @@ const Header = () => {
                                     <FiUser />
                                 </Button>
                                 <div className="greeting">
-                                    {isLoggedIn ? (
-                                        `Xin chào,${username}`
-                                    ) : (
-                                        <Link to="/login" className="login-link">Đăng nhập</Link>
-                                    )}
+                                {isLoggedIn ? (
+    <span>Xin chào, {username}</span>
+) : (
+    <Link to="/login" className="login-link">Đăng nhập</Link>
+)}
+
                                 </div>
 
                                 {isLoggedIn && isDropdownOpen && (

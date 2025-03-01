@@ -6,6 +6,7 @@ import axios from "axios";
 import logo from "../../assets/images/logo.png";
 import "./Login.css";
 import { LOGIN_USER } from "../../config/ApiConfig";
+import Swal from "sweetalert2";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -47,14 +48,38 @@ const LoginPage = () => {
 
             localStorage.setItem("user", JSON.stringify(user));
             localStorage.setItem("token", response.data.token); // Lưu riêng token
+            window.dispatchEvent(new Event("storage"));
 
-            setSuccess("Đăng nhập thành công!");
+            Swal.fire({
+              toast: true,
+              position: "top-end", // Hiển thị ở góc phải trên cùng
+              title: "Đăng nhập thành công!",
+              showConfirmButton: false,
+              timer: 1000, // 
+              timerProgressBar: true,
+              background: "#f6e6ec", // Màu nền nhẹ nhàng
+              color: "#333", // Màu chữ tối
+              icon: undefined, // ✅ Xóa icon
+          });
+
             setTimeout(() => navigate("/"), 1000);
         } else {
             setError("Lỗi: Không nhận được token từ server!");
         }
     } catch (error) {
-        setError(error.response?.data?.message || "Đăng nhập thất bại. Vui lòng thử lại!");
+        
+        Swal.fire({
+          toast: true,
+          position: "top-end", // Hiển thị ở góc phải trên cùng
+          title: "Đăng nhập thất bại. Vui lòng thử lại!",
+          showConfirmButton: false,
+          timer: 1000, // 
+          timerProgressBar: true,
+          background: "#f6e6ec", // Màu nền nhẹ nhàng
+          color: "#333", // Màu chữ tối
+          icon: undefined, // ✅ Xóa icon
+      });
+
     }
 };
 

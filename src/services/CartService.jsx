@@ -1,5 +1,7 @@
 import axios from "axios";
 import { GET_CART } from "../config/ApiConfig";
+import Swal from "sweetalert2";
+
 
 const API_CART = "http://localhost:3000/api/carts"; // API giỏ hàng
 
@@ -8,7 +10,17 @@ export const addToCart = async (productId, quantity = 1) => {
     try {
         const token = localStorage.getItem("token"); // Lấy token từ localStorage
         if (!token) {
-            alert("Bạn cần đăng nhập để thêm vào giỏ hàng!");
+            Swal.fire({
+                            toast: true,
+                            position: "top-end", // Hiển thị ở góc phải trên cùng
+                            title: "Bạn cần đăng nhập để thêm vào giỏ hàng!",
+                            showConfirmButton: false,
+                            timer: 1000, // 
+                            timerProgressBar: true,
+                            background: "#f6e6ec", // Màu nền nhẹ nhàng
+                            color: "#333", // Màu chữ tối
+                            icon: undefined, // ✅ Xóa icon
+                        });
             return;
         }
 
@@ -19,12 +31,42 @@ export const addToCart = async (productId, quantity = 1) => {
         );
 
         if (response.status === 200 || response.status === 201) {
-            alert("Sản phẩm đã được thêm vào giỏ hàng!");
+            Swal.fire({
+                toast: true,
+                position: "top-end", // Hiển thị ở góc phải trên cùng
+                title: "Sản phẩm đã được thêm vào giỏ hàng!",
+                showConfirmButton: false,
+                timer: 1000, // 
+                timerProgressBar: true,
+                background: "#f6e6ec", // Màu nền nhẹ nhàng
+                color: "#333", // Màu chữ tối
+                icon: undefined, // ✅ Xóa icon
+            });
         } else {
-            alert("Thêm vào giỏ hàng thất bại!");
+            Swal.fire({
+                toast: true,
+                position: "top-end", // Hiển thị ở góc phải trên cùng
+                title: "Thêm vào giỏ hàng thất bại!",
+                showConfirmButton: false,
+                timer: 1000, // 
+                timerProgressBar: true,
+                background: "#f6e6ec", // Màu nền nhẹ nhàng
+                color: "#333", // Màu chữ tối
+                icon: undefined, // ✅ Xóa icon
+            });
         }
     } catch (error) {
-        console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
         alert("Có lỗi xảy ra! Vui lòng thử lại.");
+        Swal.fire({
+            toast: true,
+            position: "top-end", // Hiển thị ở góc phải trên cùng
+            title: "Có lỗi xảy ra! Vui lòng thử lại.",
+            showConfirmButton: false,
+            timer: 1000, // 
+            timerProgressBar: true,
+            background: "#f6e6ec", // Màu nền nhẹ nhàng
+            color: "#333", // Màu chữ tối
+            icon: undefined, // ✅ Xóa icon
+        });
     }
 };

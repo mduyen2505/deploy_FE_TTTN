@@ -6,6 +6,7 @@ import axios from "axios";
 import "./register.css";
 import logo from "../../assets/images/logo.png";
 import { REGISTER_USER } from "../../config/ApiConfig";
+import Swal from "sweetalert2";
 
 const SignUpPage = () => {
     const navigate = useNavigate();
@@ -44,7 +45,17 @@ const SignUpPage = () => {
         }
     
         if (formData.password.trim() !== formData.confirmPassword.trim()) {
-            setError("Mật khẩu nhập lại không khớp!");
+           Swal.fire({
+                     toast: true,
+                     position: "top-end", // Hiển thị ở góc phải trên cùng
+                     title: "Nhập lại mật khẩu không khớp!",
+                     showConfirmButton: false,
+                     timer: 1000, // 
+                     timerProgressBar: true,
+                     background: "#f6e6ec", // Màu nền nhẹ nhàng
+                     color: "#333", // Màu chữ tối
+                     icon: undefined, // ✅ Xóa icon
+                 });
             return;
         }
     
@@ -57,13 +68,43 @@ const SignUpPage = () => {
             });
     
             if (response.data && response.data.user) {
-                setSuccess("Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...");
+                Swal.fire({
+                          toast: true,
+                          position: "top-end", // Hiển thị ở góc phải trên cùng
+                          title: "Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...!",
+                          showConfirmButton: false,
+                          timer: 1000, // 
+                          timerProgressBar: true,
+                          background: "#f6e6ec", // Màu nền nhẹ nhàng
+                          color: "#333", // Màu chữ tối
+                          icon: undefined, // ✅ Xóa icon
+                      });
                 setTimeout(() => navigate("/login"), 1000);
             } else {
-                setError("Lỗi: Đăng ký không thành công!");
+                Swal.fire({
+                    toast: true,
+                    position: "top-end", // Hiển thị ở góc phải trên cùng
+                    title: "Đăng ký không thành công!",
+                    showConfirmButton: false,
+                    timer: 1000, // 
+                    timerProgressBar: true,
+                    background: "#f6e6ec", // Màu nền nhẹ nhàng
+                    color: "#333", // Màu chữ tối
+                    icon: undefined, // ✅ Xóa icon
+                });
             }
         } catch (error) {
-            setError(error.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại!");
+            Swal.fire({
+                toast: true,
+                position: "top-end", // Hiển thị ở góc phải trên cùng
+                title: "Đăng ký thất bại. Vui lòng thử lại!",
+                showConfirmButton: false,
+                timer: 1000, // 
+                timerProgressBar: true,
+                background: "#f6e6ec", // Màu nền nhẹ nhàng
+                color: "#333", // Màu chữ tối
+                icon: undefined, // ✅ Xóa icon
+            });
         }
     };
     

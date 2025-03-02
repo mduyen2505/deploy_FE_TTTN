@@ -84,11 +84,11 @@ const ProductDetail = () => {
                     <p className="product-detail-price">
                         {product.discount > 0 ? (
                             <>
-                                <span className="product-detail-original-price">{product.price.toLocaleString()}đ</span>
-                                <span className="product-detail-discount-price">{product.promotionPrice.toLocaleString()}đ</span>
+                                <span className="product-detail-original-price">{product.price?.toLocaleString()}đ</span>
+                                <span className="product-detail-discount-price">{product.promotionPrice?.toLocaleString()}đ</span>
                             </>
                         ) : (
-                            `${product.price.toLocaleString()}đ`
+                            `${product.price?.toLocaleString()}đ`
                         )}
                     </p>
                     <p className="product-detail-description">{product.description}</p>

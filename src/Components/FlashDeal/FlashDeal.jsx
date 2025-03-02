@@ -128,10 +128,10 @@ const FlashDeal = () => {
             <p className="product-name">{product.name}</p>
             <div className="product-price">
               <span className="original-price">
-                {product.originalPrice.toLocaleString()} đ
+                {product?.originalPrice?.toLocaleString()} đ
               </span>
               <span className="sale-price">
-                {product.salePrice.toLocaleString()} đ
+                {product?.salePrice?.toLocaleString()} đ
               </span>
             </div>
             <p className="product-discount">-{product.discount}%</p>

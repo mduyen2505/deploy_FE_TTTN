@@ -104,15 +104,15 @@ const ProductCard = ({ product }) => {
           {product.discount > 0 ? (
             <>
               <span className="original-price">
-                {product.price.toLocaleString()}₫
+                {product.price?.toLocaleString()}₫
               </span>
               <span className="discounted-price">
-                {product.promotionPrice.toLocaleString()}₫
+                {product.promotionPrice?.toLocaleString()}₫
               </span>
             </>
           ) : (
             <span className="discounted-price">
-              {product.price.toLocaleString()}₫
+              {product.price?.toLocaleString()}₫
             </span>
           )}
         </div>

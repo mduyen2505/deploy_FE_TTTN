@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountPage.css";
+import Header from "../../Components/Header/Header"; 
+import Footer from "../../Components/Footer/Footer";
+import AddressSelector from "../../Components/Address/Address";
 import { GET_USER_INFO, UPDATE_USER_INFO } from "../../config/ApiConfig";
 
 const AccountPage = () => {
@@ -15,7 +18,6 @@ const AccountPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Hàm lấy thông tin user từ API
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -39,7 +41,6 @@ const AccountPage = () => {
             address: response.data.data.address || "",
           });
 
-          // Cập nhật lại localStorage với thông tin đầy đủ
           localStorage.setItem("user", JSON.stringify(response.data.data));
         } else {
           setError("Không thể lấy thông tin người dùng.");
@@ -55,12 +56,14 @@ const AccountPage = () => {
     fetchUser();
   }, []);
 
-  // Cập nhật giá trị khi người dùng thay đổi địa chỉ
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  // Hàm lưu thay đổi địa chỉ
+  const handleAddressSelect = (selectedAddress) => {
+    setUser({ ...user, address: selectedAddress });
+  };
+
   const handleSave = async () => {
     if (!user.userId) {
       alert("Lỗi: Không tìm thấy ID người dùng!");
@@ -74,20 +77,19 @@ const AccountPage = () => {
         return;
       }
 
-      
       const response = await axios.put(
-        UPDATE_USER_INFO,  // Không cần truyền userId trên URL
+        UPDATE_USER_INFO,
         {
-          userId: user.userId, 
-          username: user.username, // ✅ Cập nhật cả username
-          phoneNumber: user.phoneNumber, // ✅ Cập nhật số điện thoại
-          address: user.address, // ✅ Cập nhật địa chỉ
-          email: user.email // ✅ Nếu muốn giữ email
+          userId: user.userId,
+          username: user.username,
+          phoneNumber: user.phoneNumber,
+          address: user.address,
+          email: user.email,
         },
         {
-            headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
-    );
+      );
 
       if (response.status === 200) {
         alert("Cập nhật địa chỉ thành công!");
@@ -100,54 +102,58 @@ const AccountPage = () => {
   };
 
   return (
-    <div className="account-container">
-      <div className="sidebar">
-        <h2 className="sidebar-title">Account</h2>
-        <ul className="sidebar-menu">
-          <li className="active">Contact information</li>
-          <li>Change password</li>
-          <li>Orders</li>
-          <li>Wishlist</li>
-        </ul>
-      </div>
+    <>
+      <Header />
+      <div className="account-container">
+        <div className="sidebar">
+          <h2 className="sidebar-title">Account</h2>
+          <ul className="sidebar-menu">
+            <li className="active">Contact information</li>
+            <li>Change password</li>
+            <li>Orders</li>
+          </ul>
+        </div>
 
-      <div className="content">
-        <h2 className="content-title">Contact Information</h2>
+        <div className="content">
+          <h2 className="content-title">Contact Information</h2>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p className="error-message">{error}</p>
-        ) : (
-          <>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Name</label>
-                <input type="text" name="username" value={user.username} onChange={handleChange} className="input-field" />
+          {loading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p className="error-message">{error}</p>
+          ) : (
+            <>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Name</label>
+                  <input type="text" name="username" value={user.username} onChange={handleChange} className="input-field" />
+                </div>
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className="input-field" />
+                </div>
               </div>
+
               <div className="form-group">
-                <label>Phone Number</label>
-                <input type="text" name="phoneNumber" value={user.phoneNumber} onChange={handleChange} className="input-field" />
+                <label>Mail</label>
+                <input type="email" name="email" value={user.email} disabled className="input-field" />
               </div>
-            </div>
 
-            <div className="form-group">
-              <label>Mail</label>
-              <input type="email" name="email" value={user.email} disabled className="input-field" />
-            </div>
+              <div className="form-group">
+              <AddressSelector onSelectAddress={handleAddressSelect} />
+                <label>Address</label>
+                <input type="text" name="address" value={user.address} onChange={handleChange} className="input-field" />
+              </div>
 
-            <div className="form-group">
-              <label>Address</label>
-              <input type="text" name="address" value={user.address} onChange={handleChange} className="input-field" />
-            </div>
-
-            <button className="save-button" onClick={handleSave}>
-              Save
-            </button>
-          </>
-        )}
+              <button className="save-button" onClick={handleSave}>
+                Save
+              </button>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 

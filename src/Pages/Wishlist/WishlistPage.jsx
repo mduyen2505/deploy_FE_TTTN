@@ -68,11 +68,11 @@ const handleRemoveFromWishlist = async (productId) => {
             <div className="price-container">
               {product.discount > 0 ? (
                 <>
-                  <span className="original-price">{product.price.toLocaleString()}₫</span>
-                  <span className="discounted-price">{product.promotionPrice.toLocaleString()}₫</span>
+                  <span className="original-price">{product.price?.toLocaleString()}₫</span>
+                  <span className="discounted-price">{product.promotionPrice?.toLocaleString()}₫</span>
                 </>
               ) : (
-                <span className="discounted-price">{product.price.toLocaleString()}₫</span>
+                <span className="discounted-price">{product.price?.toLocaleString()}₫</span>
               )}
             </div>
             <button className="add-to-bag" onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>

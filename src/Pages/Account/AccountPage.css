@@ -34,7 +34,7 @@
   
   .sidebar-menu li:hover,
   .sidebar-menu .active {
-    color: #d63384;
+    color: #ff758c;
     font-weight: bold;
   }
   
@@ -73,6 +73,10 @@
     border-radius: 5px;
     font-size: 16px;
   }
+  .input-field:focus{
+    border-color: #ff758c;
+
+  }
   
   /* Form row */
   .form-row {
@@ -86,7 +90,7 @@
   
   /* Save button */
   .save-button {
-    background: #d63384;
+    background: #ff758c;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -97,6 +101,6 @@
   }
   
   .save-button:hover {
-    background: #b82c72;
+    background: #d65f73;
   }
   

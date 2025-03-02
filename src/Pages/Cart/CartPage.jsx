@@ -170,6 +170,9 @@ const CartPage = () => {
     const productList = cartItems.map((item) => ({
       id: item.id,
       name: item.name,
+      image: item.image || "",   
+      price: item.price || 0,    // Nếu không có price, đặt giá mặc định 0
+      quantity: item.quantity || 1, // Nếu không có quantity, đặt mặc định là 1
     })); // ✅ Sử dụng `productList`
 
     // ✅ Chuyển dữ liệu sang `OrderPage`
@@ -247,12 +250,12 @@ const CartPage = () => {
                     </td>
                     <td>
                       <span className="cart-page-new-price">
-                        {item.price.toLocaleString()} đ
+                        {item?.price?.toLocaleString()} đ
                       </span>
                       <br />
-                      {item.oldPrice && (
+                      {item?.oldPrice && (
                         <span className="cart-page-old-price">
-                          {item.oldPrice.toLocaleString()} đ
+                          {item?.oldPrice?.toLocaleString()} đ
                         </span>
                       )}
                     </td>
@@ -261,24 +264,24 @@ const CartPage = () => {
                         <button
                           className="qty-btn"
                           onClick={() =>
-                            updateCartQuantity(item.id, "decrease")
+                            updateCartQuantity(item?.id, "decrease")
                           }
-                          disabled={item.quantity <= 1}
+                          disabled={item?.quantity <= 1}
                         >
                           -
                         </button>
-                        <span className="qty-value">{item.quantity}</span>
+                        <span className="qty-value">{item?.quantity}</span>
                         <button
                           className="qty-btn"
                           onClick={() =>
-                            updateCartQuantity(item.id, "increase")
+                            updateCartQuantity(item?.id, "increase")
                           }
                         >
                           +
                         </button>
                       </div>
                     </td>
-                    <td>{(item.price * item.quantity).toLocaleString()} đ</td>
+                    <td>{(item?.price * item?.quantity)?.toLocaleString()} đ</td>
                   </tr>
                 ))}
               </tbody>
@@ -291,10 +294,10 @@ const CartPage = () => {
           <div className="cart-page-summary">
             <h3>Hóa đơn của bạn</h3>
             <p>
-              Tạm tính: <span>{totalPrice.toLocaleString()} đ</span>
+              Tạm tính: <span>{totalPrice?.toLocaleString()} đ</span>
             </p>
             <p className="cart-page-total">
-              Tổng cộng: <span>{totalPrice.toLocaleString()} đ</span>
+              Tổng cộng: <span>{totalPrice?.toLocaleString()} đ</span>
             </p>
             <button
               className="cart-page-checkout-button"

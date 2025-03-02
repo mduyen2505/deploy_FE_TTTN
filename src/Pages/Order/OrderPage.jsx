@@ -324,14 +324,34 @@ const OrderPage = () => {
 
         {/* Thông tin kiện hàng */}
         <div className="order-box order-shipping-info">
-          <h2 className="order-title">Chi tiết đơn hàng</h2>
-          {(orderData.productList || []).map((item, index) => (
-            <p key={index}>
-              {index + 1}. {item.name}
-            </p>
-          ))}
-        </div>
-      </div>
+  <h2 className="order-title">Chi tiết đơn hàng</h2>
+
+  <table className="order-product-table">
+    <thead>
+      <tr>
+        <th>Sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Giá </th>
+      </tr>
+    </thead>
+    <tbody>
+      {(orderData.productList || []).map((item, index) => (
+        <tr key={index}>
+          <td className="order-product-info">
+            <img src={item.image} alt={item.name} className="order-product-img" />
+            <span>{item.name}</span>
+          </td>
+          <td>{item.quantity}</td>
+          <td>{item.price?.toLocaleString()}₫</td>
+          
+
+          
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+</div>
 
       {/* Thanh toán ở góc phải */}
       <div className="order-payment-box">
@@ -339,7 +359,7 @@ const OrderPage = () => {
         <h2 className="order-title">Đơn hàng</h2>
         <div className="order-summary">
           <p>
-            Tạm tính: <span>{orderData.totalPrice.toLocaleString()}₫</span>
+            Tạm tính: <span>{orderData?.totalPrice?.toLocaleString("vi-VN")}₫</span>
           </p>
 
           {/* Hiển thị giảm giá nếu có */}
@@ -347,7 +367,7 @@ const OrderPage = () => {
             Giảm giá:
             <span>
               {voucherInfo
-                ? `-${voucherInfo.discountAmount.toLocaleString()}₫`
+                ? `-${voucherInfo.discountAmount?.toLocaleString("vi-VN")}₫`
                 : "-0₫"}
             </span>
           </p>
@@ -357,12 +377,12 @@ const OrderPage = () => {
             <span>
               {" "}
               {shippingFee > 0
-                ? `${shippingFee.toLocaleString()}₫`
+                ? `${shippingFee?.toLocaleString("vi-VN")}₫`
                 : "Miễn phí"}
             </span>
           </p>
           <p>
-            VAT (10%): <span>{vat.toLocaleString()}₫</span>
+            VAT (10%): <span>{vat?.toLocaleString()}₫</span>
           </p>
 
           {/* Cập nhật lại tổng tiền sau giảm giá */}
@@ -370,8 +390,8 @@ const OrderPage = () => {
             Thành tiền (Đã VAT):
             <span className="order-price">
               {voucherInfo
-                ? voucherInfo.newTotal.toLocaleString()
-                : orderTotal.toLocaleString()}
+                ? voucherInfo.newTotal?.toLocaleString()
+                : orderTotal?.toLocaleString()}
               ₫
             </span>
           </p>

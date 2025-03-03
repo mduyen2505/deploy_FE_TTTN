@@ -15,6 +15,8 @@ import CartPage from './Pages/Cart/CartPage';
 import WishlistPage from './Pages/Wishlist/WishlistPage';
 import OrderPage from './Pages/Order/OrderPage';
 import AccountPage from './Pages/Account/AccountPage';
+import OrderAccount from './Pages/OrderAccount/OrderAccount';
+import OrderDetail from './Pages/OrderDetailAccount/OrderDetailAccount';
 
 function App() {
   return (
@@ -33,6 +35,10 @@ function App() {
         <Route path="/wishlist" element={<WishlistPage />} />  
         <Route path="/order" element={<OrderPage />} />  
         <Route path="/account" element={<AccountPage />} />  
+        <Route path="/orderslist" element={<OrderAccount />} /> {/* ✅ Thêm route mới */}
+        <Route path="/orders/:orderId" element={<OrderDetail />} />
+
+ 
 
 
 

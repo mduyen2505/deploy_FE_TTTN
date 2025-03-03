@@ -15,6 +15,7 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
+  
 
     const [showReviewModal, setShowReviewModal] = useState(false); // Trạng thái hiển thị modal
 
@@ -111,24 +112,35 @@ const ProductDetail = () => {
            
                 
 
-            {/* Thành phần sản phẩm & Hướng dẫn sử dụng */}
-            <div className="product-detail-additional-info">
-                <div className="product-detail-ingredients">
-                    <h2>Thành phần sản phẩm</h2>
-                    <p><strong>Thành phần chính:</strong></p>
-                    <ul>
-                        <li>Chiết xuất từ 100% tinh dầu gỗ tuyết tùng tự nhiên từ Pháp</li>
-                    </ul>
-                </div>
+            {/* Thành phần sản phẩm */}
+<div className="product-detail-ingredients">
+    <h2>Thành phần sản phẩm</h2>
+    {product.ingredients && product.ingredients.length > 0 ? (
+        <ul>
+            {product.ingredients[0].split(".").map((item, index) => 
+                item.trim() ? <li key={index}>• {item.trim()}.</li> : null
+            )}
+        </ul>
+    ) : (
+        <p>Không có thông tin thành phần.</p>
+    )}
+</div>
 
-                <div className="product-detail-usage">
-                    <h2>Hướng dẫn sử dụng</h2>
-                    <ul>
-                        <li>Sau khi gội đầu với <strong>Dầu gội dưỡng tóc cao cấp L'Oreal Paris Extraordinary Oil Smooth 440ml</strong>, nhẹ nhàng thoa một lượng dầu xả vừa đủ lên tóc ướt.</li>
-                        <li>Để từ 1-2 phút, sau đó xả sạch tóc với nước lạnh.</li>
-                    </ul>
-                </div>
-            </div>
+{/* Hướng dẫn sử dụng */}
+<div className="product-detail-usage">
+    <h2>Hướng dẫn sử dụng</h2>
+    {product.usageInstructions ? (
+        <p>
+            {product.usageInstructions.split(".").map((sentence, index) => 
+                sentence.trim() ? <span key={index}>➤ {sentence.trim()}.<br /></span> : null
+            )}
+        </p>
+    ) : (
+        <p>Không có thông tin hướng dẫn sử dụng.</p>
+    )}
+</div>
+
+
 
             {/* Đánh giá sản phẩm */}
             <div className="product-detail-reviews">

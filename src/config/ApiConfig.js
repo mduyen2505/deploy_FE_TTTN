@@ -34,6 +34,8 @@ export const DELETE_CART_ITEM = (productId) => `${BASE_URL}/carts/${productId}`;
 export const CLEAR_CART = `${BASE_URL}/carts`; // API xóa toàn bộ giỏ hàng
 
 export const ORDER_API = `${BASE_URL}/orders`;
+export const getOrderDetails = (orderId) => `${ORDER_API}/${orderId}`; // API lấy chi tiết đơn hàng
+
 export const UPDATE_CART = `${BASE_URL}/carts/update`;
 
 export const GET_USER_INFO = `${BASE_URL}/users`; // API lấy thông tin user

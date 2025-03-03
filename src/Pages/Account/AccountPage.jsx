@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountPage.css";
+import { Link } from "react-router-dom";
 import Header from "../../Components/Header/Header"; 
 import Footer from "../../Components/Footer/Footer";
 import AddressSelector from "../../Components/Address/Address";
 import { GET_USER_INFO, UPDATE_USER_INFO } from "../../config/ApiConfig";
+import AccountSidebar from "../../Components/AccountSidebar/AccountSidebar";
 
 const AccountPage = () => {
   const [user, setUser] = useState({
@@ -105,14 +107,9 @@ const AccountPage = () => {
     <>
       <Header />
       <div className="account-container">
-        <div className="sidebar">
-          <h2 className="sidebar-title">Account</h2>
-          <ul className="sidebar-menu">
-            <li className="active">Contact information</li>
-            <li>Change password</li>
-            <li>Orders</li>
-          </ul>
-        </div>
+        
+          <AccountSidebar />
+         
 
         <div className="content">
           <h2 className="content-title">Contact Information</h2>

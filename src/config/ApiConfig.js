@@ -43,6 +43,7 @@ export const UPDATE_USER_INFO = `${BASE_URL}/users`; // API cập nhật user (k
 
 export const COUPONS_API = `${BASE_URL}/coupons`;
 export const CHECK_COUPON_API = `${BASE_URL}/coupons/check-coupon`;
+export const MOMO_PAYMENT_API = `${BASE_URL}/payments`; 
 
 
 

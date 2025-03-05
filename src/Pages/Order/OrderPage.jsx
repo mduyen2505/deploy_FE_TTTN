@@ -3,9 +3,10 @@ import "./OrderPage.css"; // Import CSS
 import Modal from "./ModalOrder";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ORDER_API } from "../../config/ApiConfig";
+import { ORDER_API, MOMO_PAYMENT_API } from "../../config/ApiConfig";
 import { GET_CART } from "../../config/ApiConfig";
 import Logo from "../../assets/images/logo.png"; // Import logo
+
 
 const OrderPage = () => {
   const location = useLocation();
@@ -152,12 +153,58 @@ const OrderPage = () => {
   const vat = Math.round(orderData.totalPrice * 0.1);
   const orderTotal = orderData.totalPrice + shippingFee + vat;
 
+
+  const handlePayment = async (orderId) => {
+    if (!orderId) {
+      console.error("❌ Lỗi: orderId bị undefined, không thể tiếp tục thanh toán!");
+      alert("Lỗi khi thanh toán: Không tìm thấy mã đơn hàng!");
+      return;
+    }
+    try {
+      const paymentData = {
+        orderId: orderId, // Sử dụng orderId từ phản hồi của API tạo đơn hàng
+        amount: voucherInfo ? voucherInfo.newTotal : orderTotal,
+        orderInfo: `Thanh toán đơn hàng #${orderId}`,
+        redirectUrl: "https://momo.vn",
+        ipnUrl: "https://webhook.site/test",
+        paymentMethod: "MoMo",
+      };
+      const token = localStorage.getItem("token"); 
+  
+      console.log('Payment Data:', paymentData); 
+      console.log('Token:', token); 
+  
+      const response = await fetch(MOMO_PAYMENT_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify(paymentData)
+      });
+  
+      const data = await response.json();
+      console.log('MoMo Response:', data); 
+  
+      if (data && data.payUrl) {
+        console.log('Redirecting to:', data.payUrl); 
+        window.location.href = data.payUrl;
+      } else {
+        console.error('Error: No payUrl in response'); 
+        alert("Lỗi khi tạo yêu cầu thanh toán MoMo.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi thanh toán MoMo:", error); 
+      alert("Lỗi khi thanh toán MoMo. Vui lòng thử lại.");
+    }
+  };
+  
   const handlePlaceOrder = async () => {
     if (!orderData.cartId || !orderData.productList.length) {
       alert("Giỏ hàng của bạn trống hoặc có lỗi với đơn hàng!");
       return;
     }
-
+  
     if (
       !orderData.name ||
       !orderData.phone ||
@@ -167,40 +214,42 @@ const OrderPage = () => {
       alert("Vui lòng nhập đầy đủ thông tin nhận hàng!");
       return;
     }
-
+  
     console.log("📦 Dữ liệu gửi lên API:", JSON.stringify(orderData, null, 2));
-
+  
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         navigate("/login");
         return;
       }
-
+  
       const response = await axios.post(ORDER_API, formattedOrderData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       console.log("✅ Phản hồi từ API:", response);
-
-      if (response.data.status === "OK") {
-        // ✅ Kiểm tra response.data.status thay vì response.status
-        alert("Đặt hàng thành công!");
-        navigate("/order-success");
+  
+      // Log chi tiết phản hồi từ API
+      console.log("Response Data:", response.data);
+  
+      if (response.data.status === "OK" && response.data.data && response.data.data.data) {
+        const orderId = response.data.data.data._id; // Lấy _id từ phản hồi API
+        console.log("✅ Order ID:", orderId);
+        handlePayment(orderId);
       } else {
+        console.error("Error: Invalid response data", response.data);
         alert("Đặt hàng thất bại. Vui lòng thử lại.");
       }
+      
     } catch (error) {
       console.error(
         "❌ Lỗi khi đặt hàng:",
         error.response?.data || error.message
       );
-      alert(
-        `Lỗi đặt hàng: ${error.response?.data?.message || "Không thể đặt hàng"}`
-      );
+      alert(`Lỗi đặt hàng: ${error.response?.data?.message || "Không thể đặt hàng"}`);
     }
   };
-
   return (
     <div className="order-container">
       <div className="order-header">

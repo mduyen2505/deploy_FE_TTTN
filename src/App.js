@@ -17,6 +17,11 @@ import OrderPage from './Pages/Order/OrderPage';
 import AccountPage from './Pages/Account/AccountPage';
 import OrderAccount from './Pages/OrderAccount/OrderAccount';
 import OrderDetail from './Pages/OrderDetailAccount/OrderDetailAccount';
+import OrderPending from './Pages/OrderPending/OrderPending ';
+import OrderConfirmed from './Pages/OrderConfirmed/OrderConfirmed';
+import Ordershipped from './Pages/OrderShipped/OrderShipped';
+import OrderCompleted from './Pages/OrderCompleted/OrderCompleted';
+import OrderCancelled from './Pages/OrderCancelled/OrderCancelled';
 
 function App() {
   return (
@@ -37,6 +42,17 @@ function App() {
         <Route path="/account" element={<AccountPage />} />  
         <Route path="/orderslist" element={<OrderAccount />} /> {/* ✅ Thêm route mới */}
         <Route path="/orders/:orderId" element={<OrderDetail />} />
+        <Route path="/orders/pending" element={<OrderPending />} />
+        <Route path="/orders/confirmed" element={<OrderConfirmed />} />
+        <Route path="/orders/shipped" element={<Ordershipped/>} />
+        <Route path="/orders/completed" element={<OrderCompleted/>} />
+        <Route path="/orders/cancelled" element={<OrderCancelled/>} />
+
+
+
+
+
+
 
  
 

@@ -48,8 +48,8 @@ const AccountSidebar = () => {
             <li className={`account-dropdown-item ${location.pathname === "/orders/shipped" ? "active" : ""}`}>
               <Link to="/orders/shipped" className="account-dropdown-link">Shipped</Link>
             </li>
-            <li className={`account-dropdown-item ${location.pathname === "/orders/completed" ? "active" : ""}`}>
-              <Link to="/orders/completed" className="account-dropdown-link">Completed</Link>
+            <li className={`account-dropdown-item ${location.pathname === "/orders/delivered" ? "active" : ""}`}>
+              <Link to="/orders/delivered" className="account-dropdown-link">Delivered</Link>
             </li>
             <li className={`account-dropdown-item ${location.pathname === "/orders/cancelled" ? "active" : ""}`}>
               <Link to="/orders/cancelled" className="account-dropdown-link">Cancelled</Link>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./OrderCompleted.css"
+import "./OrderDelivered.css"
 import AccountSidebar from "../../Components/AccountSidebar/AccountSidebar";
 import { useNavigate } from "react-router-dom";
 import Header from "../../Components/Header/Header";
 import Footer from "../../Components/Footer/Footer";
 
-const OrderCompleted = () => {
+const OrderDelivered = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -27,9 +27,9 @@ const OrderCompleted = () => {
         });
 
         if (response.data.status === "OK") {
-          // Lọc chỉ lấy đơn hàng có status "Completed"
-          const CompletedOrders = response.data.data.filter(order => order.status === "Completed");
-          setOrders(CompletedOrders);
+          // Lọc chỉ lấy đơn hàng có status "Delivered"
+          const DeliveredOrders = response.data.data.filter(order => order.status === "Delivered");
+          setOrders(DeliveredOrders);
         } else {
           setError("Không thể tải danh sách đơn hàng.");
         }
@@ -52,14 +52,14 @@ const OrderCompleted = () => {
         <AccountSidebar />
         
         <div className="content">
-          <h2 className="content-title">Đơn hàng Completed</h2>
+          <h2 className="content-title">Đơn hàng Delivered</h2>
 
           {loading ? (
             <p>Loading orders...</p>
           ) : error ? (
             <p className="error-message">{error}</p>
           ) : orders.length === 0 ? (
-            <p>Không có đơn hàng Completed nào.</p>
+            <p>Không có đơn hàng Deliverednào.</p>
           ) : (
             orders.map((order) => (
               <div key={order._id} className="orderaccount-card">
@@ -121,4 +121,4 @@ const OrderCompleted = () => {
   );
 };
 
-export default OrderCompleted;
+export default OrderDelivered;

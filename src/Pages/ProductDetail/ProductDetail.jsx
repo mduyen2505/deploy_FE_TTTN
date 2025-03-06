@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
-
 import axios from "axios";
 import Header from "../../Components/Header/Header";
 import { getProductDetails } from "../../config/ApiConfig";
@@ -9,20 +8,24 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close"; // Icon đóng modal
 import { addToCart } from "../../services/CartService";
-import { addToWishlist, removeFromWishlist, getWishlist } from "../../services/WishlistService";
+import { addToWishlist,getWishlist  } from "../../services/WishlistService";
+
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(1
+        
+    );
+
     const [isFavorite, setIsFavorite] = useState(false);
     const orderProductMap = JSON.parse(localStorage.getItem("orderProductMap")) || {};
     const orderId = orderProductMap[id] || null;
     const [rating, setRating] = useState(5); // Mặc định 5 sao
     const [comment, setComment] = useState(""); // Mặc định không có nội dung
     const [selectedRating, setSelectedRating] = useState(5); // Mặc định 5 sao
-
+    const [reviews, setReviews] = useState([]);
     const [showReviewModal, setShowReviewModal] = useState(false); // Trạng thái hiển thị modal
 
 
@@ -45,9 +48,19 @@ const ProductDetail = () => {
             const wishlist = await getWishlist();
             setIsFavorite(wishlist.includes(id)); // Kiểm tra sản phẩm có trong wishlist không
         };
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3000/api/reviews/${id}`);
+                setReviews(response.data.reviews);
+            } catch (error) {
+                console.error("Lỗi khi lấy đánh giá:", error);
+            }
+        };
 
         fetchProduct();
         fetchWishlist();
+        fetchReviews();
+
     }, [id]);
 
     const handleWishlistToggle = async () => {
@@ -60,10 +73,7 @@ const ProductDetail = () => {
 
         if (!isFavorite) {
             const success = await addToWishlist(id);
-            if (!success) setIsFavorite(false); // Hoàn tác nếu thất bại
-        } else {
-            const success = await removeFromWishlist(id);
-            if (!success) setIsFavorite(true); // Hoàn tác nếu thất bại
+          
         }
     };
     const handleReviewSubmit = async () => {
@@ -133,7 +143,10 @@ const ProductDetail = () => {
                 {/* Thông tin sản phẩm */}
                 <div className="product-detail-info-box">
                     <h1>{product.name}</h1>
-                    <div className="product-detail-rating">★★★★★ <span>({product.reviewCount} reviews)</span></div>
+                    <div className="product-detail-rating">
+    {"★".repeat(Math.round(product.averageRating))}{"☆".repeat(5 - Math.round(product.averageRating))}
+    <span>({product.totalReviews} đánh giá)</span>
+</div>
                     <p className="product-detail-price">
                         {product.discount > 0 ? (
                             <>
@@ -147,10 +160,11 @@ const ProductDetail = () => {
                     <p className="product-detail-description">{product.description}</p>
                     {/* Nút tăng/giảm số lượng (ngay dưới mô tả) */}
                     <div className="product-detail-quantity">
-                        <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
+                    <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
                         <span>{quantity}</span>
                         <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
                     </div>
+
 
                     {/* Nút thêm vào giỏ hàng + icon trái tim (cùng 1 hàng) */}
                     <div className="product-detail-actions">
@@ -198,39 +212,54 @@ const ProductDetail = () => {
             <div className="product-detail-reviews">
                 <h2>Đánh giá</h2>
                 <p>Đánh giá trung bình</p>
-                <div className="product-detail-rating-score">
-                    <span className="score">5.0</span>
-                    <span>★★★★★</span>
-                </div>
-                <button className="product-detail-write-review" onClick={() => setShowReviewModal(true)}>Viết bình luận</button>
-                <div className="product-detail-comments">
-                    <div className="product-detail-comment">
-                        <div className="product-detail-user-info">
-                            <img src="user1.jpg" alt="User Avatar" className="product-detail-avatar" />
-                            <div>
-                                <p><strong>Cathy K.</strong> <span className="verified">Verified Reviewer</span></p>
-                                <p className="product-detail-star-rating">★★★★★</p>
-                            </div>
-                        </div>
-                        <p className="product-detail-comment-title">VERY MOISTURIZING</p>
-                        <p>I didn’t know how effective the gel cream would be since I was skeptical of the texture, but my sensitive skin loved it and I didn’t even break out when I first started using it. Love it!</p>
-                        <img src="review-image1.jpg" alt="Review Image" className="product-detail-review-image" />
-                        <span className="product-detail-comment-date">26/02/23</span>
-                    </div>
+<div className="product-detail-rating-score">
+<span className="score">
+    {product.averageRating ? parseFloat(product.averageRating).toFixed(1) : "Chưa có đánh giá"}
+</span>
+    <span>
+        {"★".repeat(Math.round(product.averageRating))}
+        {"☆".repeat(5 - Math.round(product.averageRating))}
+    </span>
+</div>
 
-                    <div className="product-detail-comment">
-                        <div className="product-detail-user-info">
-                            <img src="user2.jpg" alt="User Avatar" className="product-detail-avatar" />
-                            <div>
-                                <p><strong>Aileen R.</strong></p>
-                                <p className="product-detail-star-rating">★★★★★</p>
+                <button className="product-detail-write-review" onClick={() => setShowReviewModal(true)}>Viết bình luận</button>
+
+                
+                <div className="product-detail-comments">
+                    {reviews.length > 0 ? (
+                        reviews.map((review) => (
+                            <div key={review._id} className="product-detail-comment">
+                                <div className="product-detail-user-info">
+                                <img 
+    src={review.userId.avatar ? review.userId.avatar : `https://ui-avatars.com/api/?name=${review.userId.username}`}
+    alt="User Avatar" 
+    className="product-detail-avatar"
+/>
+
+                                    <div>
+                                        <p><strong>{review.userId.username}</strong></p>
+                                        <div className="product-detail-star-rating">
+    {[...Array(5)].map((_, index) => (
+        <span key={index} style={{ color: index < review.rating ? "gold" : "gray" }}>
+            ★
+        </span>
+    ))}
+</div>
+
+                                    </div>
+                                </div>
+                                <p className="product-detail-comment-title">{review.comment}</p>
+                                <span className="product-detail-comment-date">
+                                    {new Date(review.createdAt).toLocaleDateString()}
+                                </span>
                             </div>
-                        </div>
-                        <p className="product-detail-comment-title">REALLY LIGHT AND NOT STICKY.</p>
-                        <p>Really light and not sticky. My skin soaked it right up! I mix it with the green tea products and it helps balance my combo skin.</p>
-                        <img src="review-image2.jpg" alt="Review Image" className="product-detail-review-image" />
-                        <span className="product-detail-comment-date">12/02/23</span>
-                    </div>
+                        ))
+                    ) : (
+                        <p>Chưa có đánh giá nào.</p>
+                    )}
+                
+
+            
                 </div>
             </div>
             {showReviewModal && (

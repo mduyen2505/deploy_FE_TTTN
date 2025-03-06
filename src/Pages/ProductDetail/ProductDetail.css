@@ -47,7 +47,7 @@ body {
 
 .product-detail-rating {
     color: #ffcc00;
-    font-size: 15px;
+    font-size: 18px;
     margin-bottom: 10px;
 }
 
@@ -134,9 +134,10 @@ body {
 .product-detail-reviews h2 {
     font-size: 20px;
     font-weight: bold;
-    color: #222;
+    color: #ff758c;
     margin-bottom: 10px;
 }
+
 
 .product-detail-rating-score {
     display: flex;
@@ -147,9 +148,14 @@ body {
 }
 
 .product-detail-rating-score span {
-    margin-left: 10px;
-    font-size: 22px;
-    color: rgb(233, 233, 13);
+    font-size: 28px; /* Ngôi sao trung bình to hơn */
+    color: gold;
+}
+.product-detail-star-rating {
+    font-size: 24px; /* Tăng kích thước sao */
+    color: gold; /* Màu vàng đậm */
+    display: flex;
+    gap: 5px; /* Giãn cách giữa các sao */
 }
 
 /* Nút Write a Review */
@@ -200,14 +206,16 @@ body {
 }
 
 .product-detail-avatar {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     margin-right: 10px;
 }
 
 .product-detail-user-info p {
+    
     margin: 0;
+    
 }
 
 .product-detail-verified {
@@ -359,6 +367,7 @@ body {
 .review-modal-content p {
     font-size: 18px; /* Nhỏ hơn */
     color: #000000;
+    
 }
 
 /* Close button */
@@ -486,4 +495,15 @@ body {
 
 .product-detail-usage p {
     line-height: 1.6;
+}
+.product-detail-ingredients h2{
+
+ font-size: 18px; /* Nhỏ hơn */
+    font-weight: bold;
+    color: #ff6f91;
+}
+.product-detail-usage h2{
+    font-size: 18px; /* Nhỏ hơn */
+    font-weight: bold;
+    color: #ff6f91;
 }

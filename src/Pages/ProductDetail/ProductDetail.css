@@ -343,7 +343,7 @@ body {
     background: white;
     padding: 20px;
     width: 500px;
-    height: 680px;    
+    height: 400px;    
     max-width: 90%;
     border-radius: 10px;
     position: relative;
@@ -355,6 +355,10 @@ body {
     font-weight: bold;
     color: #ff6f91;
 
+}
+.review-modal-content p {
+    font-size: 18px; /* Nhỏ hơn */
+    color: #000000;
 }
 
 /* Close button */

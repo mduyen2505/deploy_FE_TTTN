@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
+
+import axios from "axios";
 import Header from "../../Components/Header/Header";
 import { getProductDetails } from "../../config/ApiConfig";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -15,7 +17,11 @@ const ProductDetail = () => {
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
-  
+    const orderProductMap = JSON.parse(localStorage.getItem("orderProductMap")) || {};
+    const orderId = orderProductMap[id] || null;
+    const [rating, setRating] = useState(5); // Mặc định 5 sao
+    const [comment, setComment] = useState(""); // Mặc định không có nội dung
+    const [selectedRating, setSelectedRating] = useState(5); // Mặc định 5 sao
 
     const [showReviewModal, setShowReviewModal] = useState(false); // Trạng thái hiển thị modal
 
@@ -60,6 +66,52 @@ const ProductDetail = () => {
             if (!success) setIsFavorite(true); // Hoàn tác nếu thất bại
         }
     };
+    const handleReviewSubmit = async () => {
+        console.log("Dữ liệu gửi lên API:", {
+            productId: product._id,
+            orderId,
+            rating,
+            comment
+        });
+    
+        if (!orderId) {
+            alert("Bạn chỉ có thể đánh giá sau khi đơn hàng đã được giao thành công!");
+            return;
+        }
+    
+        if (!comment.trim()) {
+            alert("Vui lòng nhập nội dung đánh giá!");
+            return;
+        }
+    
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                alert("Bạn cần đăng nhập để đánh giá!");
+                return;
+            }
+    
+            const response = await axios.post("http://localhost:3000/api/reviews/", {
+                productId: product._id,
+                orderId,
+                rating,
+                comment,
+            }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+    
+            console.log("Phản hồi từ API:", response.data);
+    
+            if (response.data.message === "Đánh giá thành công!") {
+                alert("Cảm ơn bạn đã đánh giá!");
+                setShowReviewModal(false);
+            }
+        } catch (error) {
+            console.error("Lỗi khi gửi đánh giá:", error);
+            alert("Bạn đã đánh giá sản phẩm này rồi!");
+        }
+    };
+    
 
     if (loading) return <p>Đang tải sản phẩm...</p>;
     if (!product) return <p>Sản phẩm không tồn tại.</p>;
@@ -182,34 +234,43 @@ const ProductDetail = () => {
                 </div>
             </div>
             {showReviewModal && (
-                <div className="review-modal">
-                    <div className="review-modal-content">
-                        <button className="review-modal-close" onClick={() => setShowReviewModal(false)}>
-                            <CloseIcon />
-                        </button>
-                        <h2>Write a review</h2>
-                        <div className="review-modal-product">
-                            <img src="product-image.jpg" alt="Product" />
-                            <p>Floral Essence Masks Sets</p>
-                        </div>
-                        <div className="review-modal-rating">★★★★★</div>
-                        <input type="text" placeholder="Review Title" className="review-input" />
-                        <textarea placeholder="What did you think about this product?" className="review-textarea"></textarea>
-                        <button className="review-add-photo">📷 Add Photos</button>
-                        <div className="review-profile">
-                            <input type="text" placeholder="Name" />
-                            <input type="email" placeholder="Email Address" />
-                        </div>
-                        <div className="review-login-options">
-                            <p>OR</p>
-                            <button className="review-sign-in">Sign In</button>
-                            <button className="review-google-login">Continue With Google</button>
-                        </div>
-                        <p className="review-privacy">By continuing you agree to our <a href="#">Privacy Policy</a></p>
-                        <button className="review-submit">Agree & Submit</button>
-                    </div>
-                </div>
-            )}
+    <div className="review-modal">
+        <div className="review-modal-content">
+            <button className="review-modal-close" onClick={() => setShowReviewModal(false)}>✖</button>
+            <h2>Đánh giá sản phẩm</h2>
+            
+            <p>{product.name}</p>
+
+
+            {/* Chọn sao bằng icon */}
+            <div className="review-modal-rating">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                                <span
+                                    key={star}
+                                    style={{ cursor: "pointer", color: selectedRating >= star ? "gold" : "gray", fontSize: "30px" }}
+                                    onClick={() => {
+                                        setSelectedRating(star);
+                                        setRating(star);
+                                    }}
+                                >
+                                    ★
+                                </span>
+                            ))}
+            </div>
+
+            {/* Ô nhập đánh giá lớn hơn */}
+            <textarea 
+                className="review-textarea"
+                placeholder="Nhập đánh giá của bạn..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+            />
+
+            <button className="review-submit" onClick={handleReviewSubmit}>Gửi đánh giá</button>
+        </div>
+    </div>
+)}
+
         </>
     );
 };

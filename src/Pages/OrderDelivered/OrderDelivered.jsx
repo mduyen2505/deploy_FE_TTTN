@@ -30,6 +30,14 @@ const OrderDelivered = () => {
           // Lọc chỉ lấy đơn hàng có status "Delivered"
           const DeliveredOrders = response.data.data.filter(order => order.status === "Delivered");
           setOrders(DeliveredOrders);
+          const orderProductMap = {};
+          DeliveredOrders.forEach(order => {
+            order.products.forEach(product => {
+              orderProductMap[product.productId._id] = order._id;
+            });
+          });
+  
+          localStorage.setItem("orderProductMap", JSON.stringify(orderProductMap));
         } else {
           setError("Không thể tải danh sách đơn hàng.");
         }
@@ -40,10 +48,9 @@ const OrderDelivered = () => {
         setLoading(false);
       }
     };
-
+  
     fetchOrders();
   }, []);
- 
 
   return (
     <>

@@ -20,9 +20,9 @@ import OrderDetail from './Pages/OrderDetailAccount/OrderDetailAccount';
 import OrderPending from './Pages/OrderPending/OrderPending ';
 import OrderConfirmed from './Pages/OrderConfirmed/OrderConfirmed';
 import Ordershipped from './Pages/OrderShipped/OrderShipped';
-import OrderCompleted from './Pages/OrderDelivered/OrderDelivered';
 import OrderCancelled from './Pages/OrderCancelled/OrderCancelled';
 import OrderDelivered from './Pages/OrderDelivered/OrderDelivered';
+import BlogDetail  from './Components/Blog/BlogDetail';
 
 function App() {
   return (
@@ -47,7 +47,9 @@ function App() {
         <Route path="/orders/confirmed" element={<OrderConfirmed />} />
         <Route path="/orders/shipped" element={<Ordershipped/>} />
         <Route path="/orders/delivered" element={<OrderDelivered/>} />
-        <Route path="/orders/cancelled" element={<OrderCancelled/>} />
+        <Route path="/orders/cancelled" element={<OrderCancelled/>} />      
+         <Route path="/blog/:id" element={<BlogDetail />} />
+
 
 
        

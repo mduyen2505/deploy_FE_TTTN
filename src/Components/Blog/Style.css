@@ -69,7 +69,7 @@
 
 .read-more {
     font-size: 14px;
-    color: #e60023;
+    color: #ff758c;
     font-weight: bold;
     text-decoration: none;
     margin-top: auto;
@@ -79,18 +79,4 @@
     text-decoration: underline;
 }
 
-.view-all {
-    margin-top: 20px;
-    text-align: center;
-}
 
-.view-all a {
-    font-size: 14px;
-    color: #ff758c;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.view-all a:hover {
-    text-decoration: underline;
-}

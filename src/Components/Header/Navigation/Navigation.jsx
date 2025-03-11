@@ -116,8 +116,11 @@ const Navigation = () => {
                 <li className="list-inline-item"><Link to="/promo">PROMO</Link></li>
                 <li className="list-inline-item"><Link to="/blog">BLOG</Link></li>
                 <li className="list-inline-item"><Link to="/contact">CONTACT</Link></li>
+                
               </ul>
+              
             </div>
+            
           </div>
         </div>
       </nav>

@@ -66,8 +66,8 @@ nav .navPart1 .catWrapper {
 nav .navPart1 .catWrapper .sidebarNav {
   width: 200px;
   opacity: 0;
-  height: 0;
-  background: #fff;
+  height: 0; /* Đặt chiều cao tối đa */
+    background: #fff;
   position: absolute;
   top: 136%;
   left: 0px;
@@ -76,6 +76,7 @@ nav .navPart1 .catWrapper .sidebarNav {
   transition: all 0.2s;
   visibility: hidden;
   z-index: 100;
+  
 }
 
 nav .navPart1 .catWrapper .sidebarNav.open {
@@ -115,7 +116,7 @@ nav .navPart1 .catWrapper .sidebarNav ul li .submenu {
   top: 0px; /* Align at the top of the parent */
   left: 105%; /* Positioned to the right */
   width: 250px;
-  height: auto;
+  height: 500px;
   background: #fff;
   z-index: 100;
   opacity: 0;
@@ -123,6 +124,7 @@ nav .navPart1 .catWrapper .sidebarNav ul li .submenu {
   transition: all 0.2s ease-in-out;
   border-left: 1px solid rgba(0, 0, 0, 0.1); /* Divider */
   padding: 20px;
+
 }
 
 nav .navPart1 .catWrapper .sidebarNav ul li:hover .submenu {

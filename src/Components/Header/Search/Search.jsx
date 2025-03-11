@@ -23,9 +23,19 @@ const Search = () => {
         if (searchTerm.trim() === "") {
             setFilteredProducts([]);
         } else {
-            const filtered = products.filter((product) =>
-                product.name.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const filtered = products.filter((product) => {
+                const searchLower = searchTerm.toLowerCase();
+    
+                return (
+                    (product.name && product.name.toLowerCase().includes(searchLower)) ||
+                    (product.ingredients && product.ingredients.some(ingredient =>
+                        ingredient && ingredient.toLowerCase().includes(searchLower)
+                    )) ||
+                    (product.brandId && product.brandId.toLowerCase().includes(searchLower)) ||
+                    (product.typeId && product.typeId.toLowerCase().includes(searchLower))
+                );
+            });
+    
             setFilteredProducts(filtered);
         }
     }, [searchTerm, products]);
@@ -59,7 +69,6 @@ const Search = () => {
                             <img src={`http://localhost:3000/images/${product.image}`} alt={product.name} />
                             <div>
                                 <p className="productName">{product.name}</p>
-
                                 <p className="productPrice">{product.promotionPrice?.toLocaleString()} VND</p>
                             </div>
                         </div>

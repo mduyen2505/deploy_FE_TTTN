@@ -13,7 +13,6 @@ const LoginPage = () => {
 
   const [formData, setFormData] = useState({
     email: "",
-    phoneNumber: "",
     password: ""
   });
 

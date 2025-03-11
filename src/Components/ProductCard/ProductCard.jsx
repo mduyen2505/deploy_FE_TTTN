@@ -63,9 +63,11 @@ const ProductCard = ({ product }) => {
       className="product-card"
       onClick={() => navigate(`/product/${product._id}`)}
     >
-      {product.discount && (
-        <span className="discount-tag">-{product.discount}%</span>
-      )}
+  {product.discount !== undefined && product.discount !== null && product.discount > 0 && (
+    <span className="discount-tag">-{product.discount}%</span>
+)}
+
+      
 
       {/* Icon yêu thích */}
       <div
@@ -101,21 +103,18 @@ const ProductCard = ({ product }) => {
 
         {/* Hiển thị giá gốc và giá khuyến mãi */}
         <div className="price-container">
-          {product.discount > 0 ? (
-            <>
-              <span className="original-price">
-                {product.price?.toLocaleString()}₫
-              </span>
-              <span className="discounted-price">
-                {product.promotionPrice?.toLocaleString()}₫
-              </span>
-            </>
-          ) : (
-            <span className="discounted-price">
-              {product.price?.toLocaleString()}₫
-            </span>
-          )}
-        </div>
+        {product.discount !== undefined && product.discount !== null && product.discount > 0 ? (
+    <>
+      {product.price > 0 && (
+        <span className="original-price">{product.price?.toLocaleString()}₫</span>
+      )}
+      <span className="discounted-price">{product.promotionPrice?.toLocaleString()}₫</span>
+    </>
+  ) : (
+    <span className="discounted-price">{product.price?.toLocaleString()}₫</span>
+  )}
+</div>
+
 
         <button className="add-to-bag" onClick={() => addToCart(product._id)}>
           Thêm vào giỏ

@@ -23,7 +23,7 @@ import Ordershipped from './Pages/OrderShipped/OrderShipped';
 import OrderCancelled from './Pages/OrderCancelled/OrderCancelled';
 import OrderDelivered from './Pages/OrderDelivered/OrderDelivered';
 import BlogDetail  from './Components/Blog/BlogDetail';
-
+import OtpVerify from './Pages/Register/OtpVerify';
 function App() {
   return (
     <BrowserRouter>
@@ -49,6 +49,7 @@ function App() {
         <Route path="/orders/delivered" element={<OrderDelivered/>} />
         <Route path="/orders/cancelled" element={<OrderCancelled/>} />      
          <Route path="/blog/:id" element={<BlogDetail />} />
+         <Route path="/verify-otp" element={<OtpVerify />} /> {/* ✅ Thêm route này */}
 
 
 

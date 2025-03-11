@@ -5,7 +5,7 @@ import { faFacebookF, faGoogle, faTwitter, faLinkedinIn } from "@fortawesome/fre
 import axios from "axios";
 import logo from "../../assets/images/logo.png";
 import "./Login.css";
-import { LOGIN_USER } from "../../config/ApiConfig";
+import { LOGIN_USER, GOOGLE_LOGIN} from "../../config/ApiConfig";
 import Swal from "sweetalert2";
 
 const LoginPage = () => {
@@ -81,7 +81,9 @@ const LoginPage = () => {
 
     }
 };
-
+const handleGoogleLogin = () => {
+  window.location.href = GOOGLE_LOGIN; // Sử dụng endpoint từ ApiConfig
+};
 
   return (
     <div className="login-page">
@@ -110,7 +112,7 @@ const LoginPage = () => {
               <a href="#" className="login-social-icon">
                 <FontAwesomeIcon icon={faFacebookF} />
               </a>
-              <a href="#" className="login-social-icon">
+              <a href="#" className="login-social-icon" onClick={handleGoogleLogin}>
                 <FontAwesomeIcon icon={faGoogle} />
               </a>
               <a href="#" className="login-social-icon">

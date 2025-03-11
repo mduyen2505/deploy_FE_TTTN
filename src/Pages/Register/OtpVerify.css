@@ -1,0 +1,93 @@
+.otp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .otp-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 350px;
+    width: 100%;
+  }
+  
+  .otp-icon {
+    width: 50px;
+    margin-bottom: 10px;
+  }
+  
+  .otp-email {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .otp-form {
+    margin-top: 15px;
+  }
+  
+  .otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .otp-inputs input {
+    width: 40px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 2px solid #ced4da;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.2s;
+  }
+  
+  .otp-inputs input:focus {
+    border-color: #007bff;
+  }
+  
+  .otp-verify-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .otp-verify-btn:hover {
+    background: #1a252f;
+  }
+  
+  .otp-resend {
+    margin-top: 10px;
+    color: gray;
+  }
+  
+  .otp-resend span {
+    font-weight: bold;
+  }
+  
+  .otp-resend-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .otp-resend-btn:disabled {
+    color: gray;
+    cursor: not-allowed;
+  }
+  

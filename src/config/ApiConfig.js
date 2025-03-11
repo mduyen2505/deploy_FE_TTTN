@@ -29,6 +29,9 @@ export const getProductDetails = (productId) =>
     `${BASE_URL}/products/types/${productId}`;
 export const REGISTER_USER = `${BASE_URL}/users/register`;
 export const LOGIN_USER = `${BASE_URL}/users/login`;  // 
+export const GOOGLE_LOGIN = `${BASE_URL}/users/auth/google`; // Sửa lỗi cú pháp
+export const VERIFY_OTP = `${BASE_URL}/users/verify-otp`; // Thêm endpoint VERIFY_OTP
+
 export const GET_CART = `${BASE_URL}/carts`; // Thêm API giỏ hàng
 export const DELETE_CART_ITEM = (productId) => `${BASE_URL}/carts/${productId}`; // xóa sp khoi giỏ hàng 
 export const CLEAR_CART = `${BASE_URL}/carts`; // API xóa toàn bộ giỏ hàng

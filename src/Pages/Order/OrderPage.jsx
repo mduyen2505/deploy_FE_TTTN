@@ -193,9 +193,40 @@ const OrderPage = () => {
         console.error('Error: No payUrl in response'); 
         alert("Lỗi khi tạo yêu cầu thanh toán MoMo.");
       }
+      const paymentStatusData = {
+        orderId: data.orderId || orderId,
+        requestId: data.requestId || orderId,
+        amount: paymentData.amount,
+        message: data.message || "Thành công",
+        resultCode: data.resultCode || 0,
+        transId: data.transId || "123456789"
+      };
+  
+      updatePaymentStatus(paymentStatusData);
+      
     } catch (error) {
       console.error("Lỗi khi thanh toán MoMo:", error); 
       alert("Lỗi khi thanh toán MoMo. Vui lòng thử lại.");
+    }
+  };
+  const updatePaymentStatus = async (paymentStatusData) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("❌ Lỗi: Không tìm thấy token, không thể cập nhật trạng thái thanh toán!");
+        return;
+      }
+  
+      const response = await axios.post("http://localhost:3000/api/payments/momo-ipn", paymentStatusData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      console.log("✅ Phản hồi từ API cập nhật trạng thái thanh toán:", response.data);
+    } catch (error) {
+      console.error("❌ Lỗi khi cập nhật trạng thái thanh toán:", error.response?.data || error.message);
     }
   };
   

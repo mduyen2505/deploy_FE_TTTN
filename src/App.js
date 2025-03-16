@@ -24,8 +24,10 @@ import OrderCancelled from './Pages/OrderCancelled/OrderCancelled';
 import OrderDelivered from './Pages/OrderDelivered/OrderDelivered';
 import BlogDetail  from './Components/Blog/BlogDetail';
 import OtpVerify from './Pages/Register/OtpVerify';
+import Chatbox from './Components/Chatbox/Chatbox'; 
 function App() {
   return (
+    <>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<><Header /><Home /></>} />
@@ -65,6 +67,8 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    <Chatbox />
+    </>
   );
 }
 

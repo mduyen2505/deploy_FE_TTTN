@@ -58,6 +58,11 @@ export const UPDATE_PAYMENT_STATUS = `${BASE_URL}/payments/momo-ipn`;
 //blog trang home 
 export const GET_BLOB = `${BASE_URL}/blogs`; 
 
+export const FORGOT_PASSWORD = `${BASE_URL}/users/forgot-password`; 
+
+export const RESET_PASSWORD = `${BASE_URL}/users/reset-password`; 
+
+
 
 
 

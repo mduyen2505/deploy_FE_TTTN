@@ -1,10 +1,12 @@
+
+
+
 import React, { useState, useEffect } from "react";
 import "./OrderPage.css"; // Import CSS
 import Modal from "./ModalOrder";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ORDER_API, MOMO_PAYMENT_API } from "../../config/ApiConfig";
-import { GET_CART } from "../../config/ApiConfig";
+import { ORDER_API, MOMO_PAYMENT_API, CHECK_COUPON_API, COUPONS_API, UPDATE_PAYMENT_STATUS,GET_CART} from "../../config/ApiConfig";
 import Logo from "../../assets/images/logo.png"; // Import logo
 
 
@@ -62,7 +64,7 @@ const OrderPage = () => {
 
   const fetchVouchers = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/coupons");
+      const response = await axios.get(COUPONS_API);
       if (response.data.status === "OK") {
         setVouchers(response.data.data);
       }
@@ -77,25 +79,25 @@ const OrderPage = () => {
 
   const checkVoucher = async () => {
     if (!orderData.voucherCode.trim()) {
-      alert("Vui lòng nhập mã giảm giá!");
-      return;
+        alert("Vui lòng nhập mã giảm giá!");
+        return;
     }
 
     try {
-      console.log("📢 Đang kiểm tra mã giảm giá:", orderData.voucherCode);
+        console.log("📢 Đang kiểm tra mã giảm giá:", orderData.voucherCode);
 
-      const response = await axios.post(
-        "http://localhost:3000/api/coupons/check-coupon",
-        {
-          name: orderData.voucherCode,
-          orderTotal: orderTotal,
-        }
-      );
+        const response = await axios.post(
+            CHECK_COUPON_API,
+            {
+                name: orderData.voucherCode,
+                orderTotal: orderTotal,
+            }
+        );
 
-      console.log("📢 Phản hồi API kiểm tra mã giảm giá:", response.data);
+        console.log("📢 Phản hồi API kiểm tra mã giảm giá:", response.data);
 
-      if (response.data && response.data.discount) {
-        const currentDate = new Date();
+        if (response.data && response.data.discount) {
+            const currentDate = new Date();
             const expiryDate = new Date(response.data.expiry);
 
             // Kiểm tra nếu mã đã hết hạn
@@ -104,30 +106,45 @@ const OrderPage = () => {
                 setVoucherInfo(null);
                 return;
             }
-        const discountAmount = Math.round(
-          orderTotal * (response.data.discount / 100)
-        ); // Tính số tiền được giảm
-        const newTotal = orderTotal - discountAmount; // Cập nhật tổng tiền mới
 
-        setVoucherInfo({
-          ...response.data,
-          discountAmount, // Lưu số tiền giảm
-          newTotal, // Lưu tổng tiền mới sau khi giảm
-        });
+            // Tính phí vận chuyển
+            const shippingFee = orderData.totalPrice >= 500000 ? 0 : 30000;
 
-        alert(`✅ Mã hợp lệ! ${response.data.message}`);
-      } else {
-        setVoucherInfo(null);
-        alert("❌ Mã giảm giá không hợp lệ hoặc đã hết hạn!");
-      }
+            // Tính VAT 10%
+            const vat = Math.round(orderData.totalPrice * 0.1);
+
+            // Tính giảm giá trên tổng tiền (bao gồm VAT và phí vận chuyển)
+            const discountAmount = Math.round(
+                (orderData.totalPrice + shippingFee + vat) * (response.data.discount / 100)
+            );
+
+            // Tính tổng tiền cuối cùng
+            const newTotal = Math.max(orderData.totalPrice + shippingFee + vat - discountAmount, 0);
+
+            setVoucherInfo({
+                ...response.data,
+                discountAmount,
+                newTotal,
+            });
+
+            alert(`✅ Mã hợp lệ! ${response.data.message}`);
+        } else {
+            setVoucherInfo(null);
+            alert("❌ Mã giảm giá không hợp lệ hoặc đã hết hạn!");
+        }
     } catch (error) {
-      console.error(
-        "❌ Lỗi khi kiểm tra mã giảm giá:",
-        error.response?.data || error.message
-      );
-      alert("❌ Không thể kiểm tra mã giảm giá. Vui lòng thử lại!");
+        console.error(
+            "❌ Lỗi khi kiểm tra mã giảm giá:",
+            error.response?.data || error.message
+        );
+        alert("❌ Không thể kiểm tra mã giảm giá. Vui lòng thử lại!");
     }
-  };
+};
+
+const shippingFee = orderData.totalPrice >= 500000 ? 0 : 30000;
+const vat = Math.round(orderData.totalPrice * 0.1);
+const orderTotal = orderData.totalPrice + shippingFee + vat;
+
 
   useEffect(() => {
     console.log("📦 Dữ liệu nhận từ CartPage:", location.state);
@@ -149,10 +166,7 @@ const OrderPage = () => {
       voucherCode: location.state.voucherCode || "",
     });
   }, [location.state, navigate]);
-  const shippingFee = orderData.totalPrice > 500000 ? 0 : 30000;
-  const vat = Math.round(orderData.totalPrice * 0.1);
-  const orderTotal = orderData.totalPrice + shippingFee + vat;
-
+  
 
   const handlePayment = async (orderId) => {
     if (!orderId) {
@@ -217,12 +231,12 @@ const OrderPage = () => {
         return;
       }
   
-      const response = await axios.post("http://localhost:3000/api/payments/momo-ipn", paymentStatusData, {
+      const response = await axios.post(UPDATE_PAYMENT_STATUS, paymentStatusData, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         }
-      });
+    });
   
       console.log("✅ Phản hồi từ API cập nhật trạng thái thanh toán:", response.data);
     } catch (error) {

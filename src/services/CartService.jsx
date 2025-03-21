@@ -1,9 +1,9 @@
+
+
 import axios from "axios";
-import { GET_CART } from "../config/ApiConfig";
 import Swal from "sweetalert2";
 
-
-const API_CART = "http://localhost:3000/api/carts"; // API giỏ hàng
+import { API_CART } from "../config/ApiConfig";
 
 // ✅ Hàm thêm sản phẩm vào giỏ hàng
 export const addToCart = async (productId, quantity = 1) => {

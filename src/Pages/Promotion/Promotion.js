@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { getCoupons, ALL_PRODUCTS } from "../../config/ApiConfig";
 import ProductCard from "../../Components/ProductCard/ProductCard";
@@ -77,7 +78,6 @@ const Promo = () => {
                             <h3 className="voucher-discount">Giảm {voucher.discount}%</h3>
                             <p className="voucher-description">{voucher.description}</p>
                             <p className="voucher-expiry">Hết hạn: {new Date(voucher.expiry).toLocaleDateString()}</p>
-                            <button className="voucher-button">LẤY NGAY</button>
                         </div>
                     ))
                 ) : (

@@ -1,14 +1,15 @@
+
+
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000/api/users/wishlist";
-
+import { WISHLIST } from "../config/ApiConfig";
 // Hàm lấy danh sách wishlist từ server
 export const getWishlist = async () => {
     try {
         const token = localStorage.getItem("token");
         if (!token) return [];
 
-        const response = await axios.get(BASE_URL, {
+        const response = await axios.get(WISHLIST, {
             headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -26,7 +27,7 @@ export const addToWishlist = async (productId) => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Người dùng chưa đăng nhập");
 
-        const response = await axios.post(`${BASE_URL}/add`, { productId }, {
+        const response = await axios.post(`${WISHLIST}/add`, { productId }, {
             headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -46,7 +47,7 @@ export const removeFromWishlist = async (productId) => {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("Người dùng chưa đăng nhập");
 
-        const response = await axios.delete(`${BASE_URL}/remove`, {
+        const response = await axios.delete(`${WISHLIST}/remove`, {
             headers: { Authorization: `Bearer ${token}` },
             data: { productId },
         });
@@ -59,3 +60,4 @@ export const removeFromWishlist = async (productId) => {
 };
 
 
+ 

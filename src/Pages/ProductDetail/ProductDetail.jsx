@@ -1,18 +1,23 @@
+
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetail.css";
 import axios from "axios";
 import Header from "../../Components/Header/Header";
-import { getProductDetails } from "../../config/ApiConfig";
+import { getProductDetails, UPDATE_CART,API_CART } from "../../config/ApiConfig";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CloseIcon from "@mui/icons-material/Close"; // Icon đóng modal
 import { addToCart } from "../../services/CartService";
 import { addToWishlist, getWishlist } from "../../services/WishlistService";
 
+
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
+      const [cartItems, setCartItems] = useState([]);
+    
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [isFavorite, setIsFavorite] = useState(false);
@@ -69,6 +74,44 @@ const ProductDetail = () => {
             const success = await addToWishlist(id);
         }
     };
+
+    // Hàm gọi API cập nhật số lượng sản phẩm (Tăng/Giảm)
+    const updateCartQuantity = async (productId, action) => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.warn("Không có token, không thể cập nhật số lượng.");
+                return;
+            }
+    
+            const response = await axios.post(
+                UPDATE_CART,
+                { productId, action },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+    
+            if (response.status === 200) {
+                console.log("Cập nhật số lượng thành công:", response.data);
+    
+                // 🔥 Lấy giỏ hàng mới để cập nhật số lượng chính xác
+                const updatedCart = await axios.get(API_CART, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+    
+                // 🔥 Tìm sản phẩm trong giỏ hàng để cập nhật số lượng
+                const updatedProduct = updatedCart.data.cart.find(item => item.id === productId);
+                if (updatedProduct) {
+                    setQuantity(updatedProduct.quantity);
+                }
+            } else {
+                console.warn("API trả về lỗi:", response.data);
+            }
+        } catch (error) {
+            console.error("Lỗi khi cập nhật giỏ hàng:", error);
+        }
+    };
+    
+    
 
     const handleReviewSubmit = async () => {
         console.log("Dữ liệu gửi lên API:", {
@@ -151,12 +194,14 @@ const ProductDetail = () => {
                         )}
                     </p>
                     <p className="product-detail-description">{product.description}</p>
-                    {/* Nút tăng/giảm số lượng (ngay dưới mô tả) */}
                     <div className="product-detail-quantity">
-                        <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
-                        <span>{quantity}</span>
-                        <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
-                    </div>
+    <button onClick={() => updateCartQuantity(product._id, "decrease")}>-</button>
+    <span>{quantity}</span>
+    <button onClick={() => updateCartQuantity(product._id, "increase")}>+</button>
+</div>
+
+
+
 
                     {/* Nút thêm vào giỏ hàng + icon trái tim (cùng 1 hàng) */}
                     <div className="product-detail-actions">

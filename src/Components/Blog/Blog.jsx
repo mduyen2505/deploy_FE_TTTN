@@ -1,6 +1,10 @@
+
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Style.css";
+import { GET_BLOB } from "../../config/ApiConfig";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -9,7 +13,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/blogs");
+        const response = await axios.get(GET_BLOB);
         setBlogs(response.data.data); // Lưu dữ liệu từ API vào state
         setLoading(false);
       } catch (error) {

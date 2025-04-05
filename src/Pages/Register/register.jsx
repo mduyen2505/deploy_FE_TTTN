@@ -74,7 +74,6 @@ const SignUpPage = () => {
           timer: 1500,
         });
 
-        // Lưu email vào localStorage hoặc state để dùng cho xác thực OTP
         localStorage.setItem("emailForOtp", formData.email);
 
         // Chuyển hướng đến trang nhập OTP
@@ -82,14 +81,14 @@ const SignUpPage = () => {
       } else {
         Swal.fire({
           toast: true,
-          position: "top-end", // Hiển thị ở góc phải trên cùng
+          position: "top-end", 
           title: "Đăng ký không thành công!",
           showConfirmButton: false,
           timer: 1000, // 
           timerProgressBar: true,
-          background: "#f6e6ec", // Màu nền nhẹ nhàng
-          color: "#333", // Màu chữ tối
-          icon: "error", // Hiển thị icon lỗi
+          background: "#f6e6ec", 
+          color: "#333", 
+          icon: "error",
         });
       }
     } catch (error) {

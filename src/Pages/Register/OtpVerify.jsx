@@ -12,11 +12,48 @@ const OtpVerify = () => {
 
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(30); // Thời gian chờ gửi lại OTP
 
   const handleChange = (e) => {
     setOtp(e.target.value);
   };
 
+  // Hàm gửi lại OTP
+  const handleResendOtp = async () => {
+    setIsDisabled(true);
+    setCountdown(30); // Reset thời gian đếm ngược
+
+    try {
+      const response = await axios.post(`${VERIFY_OTP}/resend`, { email });
+      console.log("Resend OTP response:", response.data);
+
+      Swal.fire({
+        title: "OTP mới đã được gửi!",
+        text: "Vui lòng kiểm tra email của bạn.",
+        icon: "success",
+        timer: 1500,
+      });
+
+      // Đếm ngược để kích hoạt lại nút gửi
+      const interval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === 1) {
+            clearInterval(interval);
+            setIsDisabled(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (error) {
+      console.error("Lỗi khi gửi lại OTP:", error);
+      setError("Lỗi khi gửi lại OTP. Vui lòng thử lại.");
+      setIsDisabled(false);
+    }
+  };
+
+  // Hàm xử lý xác thực OTP
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -53,7 +90,7 @@ const OtpVerify = () => {
         <h2>Xác Thực OTP</h2>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="otp-input-field">
+          <div className="otp-inputs">
             <input
               type="text"
               name="otp"
@@ -66,6 +103,18 @@ const OtpVerify = () => {
           <button type="submit" className="otp-verify-btn">
             Xác Thực
           </button>
+          <div className="otp-resend">
+            <p>
+              Không nhận được mã?
+              <button
+                className="otp-resend-btn"
+                onClick={handleResendOtp}
+                disabled={isDisabled}
+              >
+                {isDisabled ? `Gửi lại sau ${countdown}s` : "Gửi lại"}
+              </button>
+            </p>
+          </div>
         </form>
       </div>
     </div>

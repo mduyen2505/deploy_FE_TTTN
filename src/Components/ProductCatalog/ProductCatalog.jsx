@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/grid"; // Import grid layout của Swiper
-import { Navigation, Grid } from "swiper/modules"; // Thêm Grid module
-import { BRANDS } from "../../config/ApiConfig"; // Import API endpoint
-
+import "swiper/css/grid"; 
+import { Navigation, Grid } from "swiper/modules"; 
+import { BRANDS } from "../../config/ApiConfig"; 
 const ProductCatalog = () => {
   const [brands, setBrands] = useState([]);
 

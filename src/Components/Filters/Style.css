@@ -1,67 +1,56 @@
-/* Sidebar bộ lọc */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
 .sidebar {
-    width: 250px;
-    background: white;
+    width: 200px;
     padding: 20px;
-    border-radius: 10px;
-    flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h2 {
-    font-size: 18px;
-    margin-bottom: 15px;
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #333;
 }
 
-.sidebar p {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-/* Danh mục cha và danh mục con */
-.sidebar a.category-link {
-    font-weight: bold;
-    color: #000;
-    text-decoration: none;
-}
-
-.sidebar a.subcategory-link {
-    color: #007BFF;
-    text-decoration: none;
-}
-
-.sidebar a.subcategory-link:hover {
-    text-decoration: underline;
-}
-
-/* Thanh điều chỉnh giá */
-.sidebar input[type="range"] {
-    width: 100%;
-    margin: 10px 0;
-}
-
-/* Danh sách thương hiệu */
-.sidebar label {
+.checkbox-container {
     display: block;
-    font-size: 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
-/* Nút Apply */
+.checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+}
+
 .apply-filter {
+    margin-top: 16px;
+    padding: 10px 16px;
     width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    transition: background 0.3s;
 }
 
 .apply-filter:hover {
     background-color: #0056b3;
+}
+.scrollable {
+    max-height: 200px;  /* Chiều cao tối đa */
+    overflow-y: auto;   /* Cuộn dọc */
+    margin-bottom: 10px;
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 0;
 }

@@ -1,63 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Style.css";
 
-const Filter = ({ selectedBrand, setSelectedBrand, priceRange, setPriceRange }) => {
-  
-  // Hàm cập nhật thương hiệu khi chọn checkbox
-  const handleBrandChange = (brand) => {
-    setSelectedBrand((prevSelected) =>
-      prevSelected.includes(brand)
-        ? prevSelected.filter((b) => b !== brand) // Bỏ chọn nếu đã chọn
-        : [...prevSelected, brand]
+const Filter = ({ setSelectedPriceRange, applyFilters }) => {
+    const [selectedRanges, setSelectedRanges] = useState([]);
+
+    // Hàm xử lý thay đổi checkbox
+    const handleCheckboxChange = (value) => {
+        setSelectedRanges((prev) =>
+            prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+        );
+    };
+
+    // Hàm gọi khi nhấn nút "Áp dụng"
+    const handleApplyFilters = () => {
+        setSelectedPriceRange(selectedRanges);
+        applyFilters();
+    };
+
+    return (
+        <aside className="sidebar">
+            <h2>Bộ lọc giá</h2>
+            {[
+                { label: "Dưới 100K", value: "0-100000" },
+                { label: "100K - 200K", value: "100000-200000" },
+                { label: "200K - 300K", value: "200000-300000" },
+                { label: "300K - 400K", value: "300000-400000" },
+                { label: "400K - 500K", value: "400000-500000" },
+                { label: "500K - 1M", value: "500000-1000000" },
+                { label: "1M - 2M", value: "1000000-2000000" },
+                { label: "2M - 5M", value: "2000000-5000000" },
+                { label: "5M - 10M", value: "5000000-10000000" },
+                { label: "Trên 10M", value: "10000000+" },
+            ].map((range, index) => (
+                <label key={index} className="checkbox-container">
+                    <input
+                        type="checkbox"
+                        value={range.value}
+                        onChange={() => handleCheckboxChange(range.value)}
+                    />{" "}
+                    {range.label}
+                </label>
+            ))}
+            <button className="apply-filter" onClick={handleApplyFilters}>
+                Áp dụng
+            </button>
+        </aside>
     );
-  };
-
-  return (
-    <aside className="sidebar">
-      <h2>Filters</h2>
-      <p><a href="#" className="category-link">Danh mục cha - Tên danh mục</a></p>
-      <p><a href="#" className="subcategory-link">Danh mục con 1</a></p>
-      <p><a href="#" className="subcategory-link">Danh mục con 2</a></p>
-      <p><a href="#" className="subcategory-link">Danh mục con 3</a></p>
-      
-      <p>Price Range</p>
-      <input
-        type="range"
-        min="0"
-        max="1000"
-        value={priceRange}
-        onChange={(e) => setPriceRange(e.target.value)}
-      />
-      
-      <p>Thương hiệu</p>
-      <label>
-        <input 
-          type="checkbox" 
-          checked={selectedBrand.includes("Thương hiệu 1")} 
-          onChange={() => handleBrandChange("Thương hiệu 1")}
-        /> 
-        Thương hiệu 1
-      </label>
-      <label>
-        <input 
-          type="checkbox" 
-          checked={selectedBrand.includes("Thương hiệu 2")} 
-          onChange={() => handleBrandChange("Thương hiệu 2")}
-        /> 
-        Thương hiệu 2
-      </label>
-      <label>
-        <input 
-          type="checkbox" 
-          checked={selectedBrand.includes("Thương hiệu 3")} 
-          onChange={() => handleBrandChange("Thương hiệu 3")}
-        /> 
-        Thương hiệu 3
-      </label>
-
-      <button className="apply-filter">Apply</button>
-    </aside>
-  );
 };
 
 export default Filter;

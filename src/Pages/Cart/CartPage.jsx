@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./CartPage.css";
+
+import Header from "../../Components/Header/Header";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Footer from "../../Components/Footer/Footer";
 import {
   GET_CART,
   DELETE_CART_ITEM,
   CLEAR_CART,
   UPDATE_CART,
 } from "../../config/ApiConfig";
-import Header from "../../Components/Header/Header";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import Footer from "../../Components/Footer/Footer";
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);

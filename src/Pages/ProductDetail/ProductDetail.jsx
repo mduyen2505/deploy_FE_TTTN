@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./ProductDetail.css";
 import axios from "axios";
 import Header from "../../Components/Header/Header";
@@ -17,6 +17,8 @@ const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
       const [cartItems, setCartItems] = useState([]);
+      const navigate = useNavigate();
+
     
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
@@ -28,6 +30,8 @@ const ProductDetail = () => {
     const [selectedRating, setSelectedRating] = useState(5); // Mặc định 5 sao
     const [reviews, setReviews] = useState([]);
     const [showReviewModal, setShowReviewModal] = useState(false); // Trạng thái hiển thị modal
+    const [recommendedProducts, setRecommendedProducts] = useState([]);
+
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -56,7 +60,24 @@ const ProductDetail = () => {
                 console.error("Lỗi khi lấy đánh giá:", error);
             }
         };
-
+        const fetchRecommendations = async () => {
+            if (!id || id === 'undefined') {
+                console.error("Product ID is undefined, skipping recommendation fetch");
+                return;
+            }
+            
+            try {
+                const response = await axios.get(`http://localhost:5000/get_recommendations?product_id=${id}`);
+                setRecommendedProducts(response.data.recommended_products);
+            } catch (error) {
+                console.error("Error fetching product recommendations:", error);
+            }
+        };
+        
+        
+          
+        
+        fetchRecommendations();
         fetchProduct();
         fetchWishlist();
         fetchReviews();
@@ -158,6 +179,10 @@ const ProductDetail = () => {
             alert("Bạn đã đánh giá sản phẩm này rồi!");
         }
     };
+    const handleRecommendedProductClick = (recommendedProductId) => {
+        navigate(`/product/${recommendedProductId}`);
+    };
+    
 
     if (loading) return <p>Đang tải sản phẩm...</p>;
     if (!product) return <p>Sản phẩm không tồn tại.</p>;
@@ -240,7 +265,7 @@ const ProductDetail = () => {
                     <p>Không có thông tin hướng dẫn sử dụng.</p>
                 )}
             </div>
-
+           
             {/* Đánh giá sản phẩm */}
             <div className="product-detail-reviews">
                 <h2>Đánh giá</h2>
@@ -297,6 +322,52 @@ const ProductDetail = () => {
                     )}
                 </div>
             </div>
+
+            <div className="recommended-products-section">
+    <h3>Sản phẩm gợi ý</h3>
+    <div className="recommended-products-container">
+        {recommendedProducts.length > 0 ? (
+            recommendedProducts.map((recommendedProduct, index) => (
+                <div className="product-card" key={index} onClick={() => handleRecommendedProductClick(recommendedProduct._id)}>
+                    {recommendedProduct.discount && recommendedProduct.discount > 0 && (
+                        <span className="discount-tag">-{recommendedProduct.discount}%</span>
+                    )}
+
+                    <img
+                        src={recommendedProduct.image && recommendedProduct.image.startsWith("http")
+                            ? recommendedProduct.image
+                            : `http://localhost:3000/images/${recommendedProduct.image}`}
+                        alt={recommendedProduct.name}
+                        className="product-image"
+                    />
+                    <div className="product-info">
+                        <h5 className="product-name">{recommendedProduct.name}</h5>
+                        <div className="rating">
+                            {"★".repeat(Math.round(recommendedProduct.averageRating))}{"☆".repeat(5 - Math.round(recommendedProduct.averageRating))}
+                        </div>
+                        <div className="price-container">
+                            {recommendedProduct.discount > 0 ? (
+                                <>
+                                    <span className="original-price">{recommendedProduct.price?.toLocaleString()}₫</span>
+                                    <span className="discounted-price">{recommendedProduct.promotionPrice?.toLocaleString()}₫</span>
+                                </>
+                            ) : (
+                                <span className="discounted-price">{recommendedProduct.price?.toLocaleString()}₫</span>
+                            )}
+                        </div>
+                        <button className="add-to-bag" onClick={() => addToCart(recommendedProduct._id)}>
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            ))
+        ) : (
+            <p>Không có sản phẩm gợi ý.</p>
+        )}
+    </div>
+</div>
+
+
             {showReviewModal && (
                 <div className="review-modal">
                     <div className="review-modal-content">

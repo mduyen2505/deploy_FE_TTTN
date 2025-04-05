@@ -507,3 +507,51 @@ body {
     font-weight: bold;
     color: #ff6f91;
 }
+
+/* Container sản phẩm gợi ý */
+.recommended-products-section {
+    margin-top: 40px;
+    padding: 20px;
+    margin-left: 160px;
+
+    
+}
+
+.recommended-products-section h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.recommended-products-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;  /* Cho phép cuộn ngang nếu không đủ chỗ */
+    gap: 20px;  /* Khoảng cách giữa các sản phẩm */
+    padding-bottom: 20px;  /* Để không bị mất sản phẩm khi cuộn */
+}
+
+/* Đảm bảo ProductCard có kích thước phù hợp trong container */
+.recommended-products-container .product-card {
+    min-width: 220px;
+    max-width: 220px;
+}
+
+/* Tùy chỉnh thanh cuộn */
+.recommended-products-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.recommended-products-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.recommended-products-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.recommended-products-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

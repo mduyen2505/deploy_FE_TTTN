@@ -205,9 +205,12 @@ const ProductDetail = () => {
                 <div className="product-detail-info-box">
                     <h1>{product.name}</h1>
                     <div className="product-detail-rating">
-                        {"★".repeat(Math.round(product.averageRating))}{"☆".repeat(5 - Math.round(product.averageRating))}
-                        <span>({product.totalReviews} đánh giá)</span>
-                    </div>
+    {"★".repeat(Math.round(product.averageRating))}{"☆".repeat(5 - Math.round(product.averageRating))}
+    <span>({product.totalReviews} đánh giá)</span>
+    <span className="sold-info"> | Đã bán: {product.sold} sản phẩm</span> {/* Thêm lớp CSS cho phần Đã bán */}
+</div>
+
+
                     <p className="product-detail-price">
                         {product.discount > 0 ? (
                             <>

@@ -1,0 +1,81 @@
+.contact-container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #fff;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .contact-header {
+    margin-bottom: 30px;
+  }
+  
+  .contact-header h1 {
+    font-size: 26px;
+    color: #ff758c;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .contact-info {
+    margin-bottom: 30px;
+    text-align: left; /* Aligning the contact info to the left */
+  }
+  
+  .contact-item {
+    font-size: 18px;
+  }
+  
+  .contact-item p {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+  }
+  
+  .contact-item a {
+    color: #ff758c;
+    text-decoration: none;
+  }
+  
+  .contact-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .contact-item svg {
+    margin-right: 10px; /* Space between icon and text */
+  }
+  
+  .contact-location {
+    margin-bottom: 30px;
+    text-align: left; /* Aligning the address to the left */
+  }
+  
+  .contact-location h3 {
+    font-size: 20px;
+    color: #ff758c;
+  }
+  
+  .contact-location p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .map-container {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .contact-footer {
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+  }
+  
+  .contact-footer p {
+    margin-top: 30px;
+  }
+  

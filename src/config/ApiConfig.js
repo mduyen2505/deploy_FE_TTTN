@@ -61,6 +61,8 @@ export const GET_BLOB = `${BASE_URL}/blogs`;
 export const FORGOT_PASSWORD = `${BASE_URL}/users/forgot-password`; 
 
 export const RESET_PASSWORD = `${BASE_URL}/users/reset-password`; 
+export const DELETE_USER_ACCOUNT = `${BASE_URL}/users/me`; 
+
 
 
 

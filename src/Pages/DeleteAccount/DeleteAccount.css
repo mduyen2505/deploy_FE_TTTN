@@ -1,0 +1,87 @@
+/* Container chính */
+.account-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* Content */
+.content {
+    width: 70%;
+    background: white;
+    padding: 30px;
+    margin-left: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.content-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+/* Text (non-editable) fields */
+.input-field, .info-text {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Text (non-editable) fields */
+.info-text {
+    border: none;
+    background-color: transparent;
+    padding: 5px 10px;
+}
+
+.info-text:focus {
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+/* Form row: Ensuring all items are in a row with even space */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap; /* Ensures wrapping on smaller screens */
+}
+
+.form-row .form-group {
+    width: 48%; /* Ensure both fields take up 48% of the available width */
+}
+
+/* Delete account button */
+.delete-button {
+    background-color: red;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}

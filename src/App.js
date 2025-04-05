@@ -25,6 +25,8 @@ import OrderDelivered from './Pages/OrderDelivered/OrderDelivered';
 import BlogDetail  from './Components/Blog/BlogDetail';
 import OtpVerify from './Pages/Register/OtpVerify';
 import Chatbox from './Components/Chatbox/Chatbox'; 
+import DeleteAccount from './Pages/DeleteAccount/DeleteAccount';
+import ContactPage from './Pages/ContactPage/ContactPage';
 function App() {
   return (
     <>
@@ -52,6 +54,10 @@ function App() {
         <Route path="/orders/cancelled" element={<OrderCancelled/>} />      
          <Route path="/blog/:id" element={<BlogDetail />} />
          <Route path="/verify-otp" element={<OtpVerify />} /> {/* ✅ Thêm route này */}
+         <Route path="/delete-account" element={<DeleteAccount />} />
+         <Route path="/contact" element={<ContactPage />} />
+
+
 
 
 

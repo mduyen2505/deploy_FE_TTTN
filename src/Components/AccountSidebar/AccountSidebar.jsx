@@ -21,10 +21,10 @@ const AccountSidebar = () => {
           <Link to="/account" className="account-sidebar-link">Contact information</Link>
         </li>
 
-        {/* Change Password */}
-        <li className={`account-sidebar-item ${location.pathname === "/change-password" ? "active" : ""}`}>
-          <Link to="/change-password" className="account-sidebar-link">Change password</Link>
-        </li>
+        <li className={`account-sidebar-item ${location.pathname === "/delete-account" ? "active" : ""}`}>
+  <Link to="/delete-account" className="account-sidebar-link">Delete Account</Link>
+</li>
+
 
         {/* Orders Dropdown */}
         <li className="account-dropdown">

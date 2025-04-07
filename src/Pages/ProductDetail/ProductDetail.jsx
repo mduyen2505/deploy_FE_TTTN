@@ -318,12 +318,24 @@ const ProductDetail = () => {
                                 <span className="product-detail-comment-date">
                                     {new Date(review.createdAt).toLocaleDateString()}
                                 </span>
-                            </div>
-                        ))
-                    ) : (
-                        <p>Chưa có đánh giá nào.</p>
-                    )}
-                </div>
+                                 {/* 👇 Hiển thị phản hồi từ admin tại đây */}
+                                 {/* 👇 Hiển thị phản hồi từ admin tại đây */}
+{review.response && review.response.text && (
+  <div className="admin-response">
+    <span className="admin-response-label">Glowify</span>
+    <span className="admin-response-date">
+      {new Date(review.response.respondedAt).toLocaleDateString()}
+    </span>
+    <p className="admin-response-text">{review.response.text}</p>
+  </div>
+)}
+
+            </div>
+        ))
+    ) : (
+        <p>Chưa có đánh giá nào.</p>
+    )}
+</div>
             </div>
 
             <div className="recommended-products-section">

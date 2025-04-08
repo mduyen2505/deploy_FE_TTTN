@@ -45,35 +45,48 @@ const Ordershipped = () => {
   }, []);
 
   const handleConfirmOrder = async (orderId) => {
-    const confirmDelivery = window.confirm("Bạn có chắc chắn muốn xác nhận đã giao đơn hàng này không?");
-    if (!confirmDelivery) return;
-  
     try {
       const token = localStorage.getItem("token");
+      
+      // Kiểm tra token hợp lệ
+      if (!token) {
+        alert("Vui lòng đăng nhập lại");
+        navigate("/login");
+        return;
+      }
   
-      console.log("🔍 Gửi yêu cầu xác nhận đơn hàng với orderId:", orderId); // Log kiểm tra
-  
-      const response = await axios.post(
-        "http://localhost:3000/api/orders/deliver", 
-        { orderId: orderId }, 
-        { headers: { Authorization: `Bearer ${token}` } }
+      const response = await axios.put(
+        "http://localhost:3000/api/orders/deliver",
+        { orderId },
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json" 
+          } 
+        }
       );
   
-      console.log("✅ Phản hồi từ API xác nhận đơn hàng:", response.data);
-  
+      // Xử lý response
       if (response.data.status === "OK") {
-        // Cập nhật danh sách đơn hàng, loại bỏ đơn hàng đã giao
-        setOrders(prevOrders => prevOrders.filter(order => order._id !== orderId));
-        alert("Xác nhận đơn hàng thành công!");
-      } else {
-        console.error("Error: Invalid response data", response.data); // Log lỗi chi tiết
-        alert("Lỗi: " + response.data.message);
+        setOrders(prev => prev.filter(order => order._id !== orderId));
+        alert("Xác nhận thành công!");
       }
     } catch (error) {
-      console.error("❌ Lỗi khi xác nhận đơn hàng:", error);
-      alert("Không thể xác nhận đơn hàng. Vui lòng thử lại!");
+      console.error("Chi tiết lỗi:", error.response?.data || error.message);
+      
+      // Xử lý các loại lỗi cụ thể
+      if (error.response?.status === 401) {
+        alert("Phiên đăng nhập hết hạn");
+        localStorage.removeItem("token");
+        navigate("/login");
+      } else if (error.response?.data?.message) {
+        alert(`Lỗi: ${error.response.data.message}`);
+      } else {
+        alert("Lỗi hệ thống");
+      }
     }
   };
+  
 
   return (
     <>

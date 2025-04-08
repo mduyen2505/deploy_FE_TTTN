@@ -216,7 +216,6 @@ const orderTotal = orderData.totalPrice + shippingFee + vat;
         transId: data.transId || "123456789"
       };
   
-      updatePaymentStatus(paymentStatusData);
       
     } catch (error) {
       console.error("Lỗi khi thanh toán MoMo:", error); 

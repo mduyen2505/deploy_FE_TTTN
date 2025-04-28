@@ -127,25 +127,32 @@ const Ordershipped = () => {
 
                 {/* Danh sách sản phẩm trong đơn hàng */}
                 {order.products.map((item, idx) => (
-                  <div key={idx} className="orderaccount-item">
-                    <img
-                      src={
-                        item.productId.image.startsWith("http")
-                          ? item.productId.image
-                          : `http://localhost:3000/images/${item.productId.image}`
-                      }
-                      alt={item.productId.name}
-                      className="orderaccount-item-image"
-                    />
-                    <div className="orderaccount-item-details">
-                      <h4 className="orderaccount-item-name">{item.productId.name}</h4>
-                      <p className="orderaccount-item-quantity">Số lượng: {item.quantity}</p>
-                      <p className="orderaccount-item-price">
-                        Giá: {item.productId.promotionPrice.toLocaleString()} đ
-                      </p>
-                    </div>
-                  </div>
-                ))}
+  item.productId ? (
+    <div key={idx} className="orderaccount-item">
+      <img
+        src={
+          item.productId.image.startsWith("http")
+            ? item.productId.image
+            : `http://localhost:3000/images/${item.productId.image}`
+        }
+        alt={item.productId.name}
+        className="orderaccount-item-image"
+      />
+      <div className="orderaccount-item-details">
+        <h4 className="orderaccount-item-name">{item.productId.name}</h4>
+        <p className="orderaccount-item-quantity">Số lượng: {item.quantity}</p>
+        <p className="orderaccount-item-price">
+          Giá: {item.productId.promotionPrice.toLocaleString()} đ
+        </p>
+      </div>
+    </div>
+  ) : (
+    <div key={idx} className="orderaccount-item">
+      <p className="error-message">Sản phẩm này không còn tồn tại.</p>
+    </div>
+  )
+))}
+
 
                 {/* Tổng tiền */}
                 <div className="orderaccount-summary">

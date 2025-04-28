@@ -83,25 +83,32 @@ const OrderAccount = () => {
                 </div>
 
                 {order.products.map((item, idx) => (
-                  <div key={idx} className="orderaccount-item">
-                    <img
-                      src={
-                        item.productId.image.startsWith("http")
-                          ? item.productId.image
-                          : `http://localhost:3000/images/${item.productId.image}`
-                      }
-                      alt={item.productId.name}
-                      className="orderaccount-item-image"
-                    />
-                    <div className="orderaccount-item-details">
-                      <h4 className="orderaccount-item-name">{item.productId.name}</h4>
-                      <p className="orderaccount-item-quantity">Số lượng: {item.quantity}</p>
-                      <p className="orderaccount-item-price">
-                        Giá: {item.productId.promotionPrice.toLocaleString()} đ
-                      </p>
-                    </div>
-                  </div>
-                ))}
+  item.productId ? (
+    <div key={idx} className="orderaccount-item">
+      <img
+        src={
+          item.productId.image.startsWith("http")
+            ? item.productId.image
+            : `http://localhost:3000/images/${item.productId.image}`
+        }
+        alt={item.productId.name}
+        className="orderaccount-item-image"
+      />
+      <div className="orderaccount-item-details">
+        <h4 className="orderaccount-item-name">{item.productId.name}</h4>
+        <p className="orderaccount-item-quantity">Số lượng: {item.quantity}</p>
+        <p className="orderaccount-item-price">
+          Giá: {item.productId.promotionPrice.toLocaleString()} đ
+        </p>
+      </div>
+    </div>
+  ) : (
+    <div key={idx} className="orderaccount-item">
+      <p className="error-message">Sản phẩm đã bị xóa hoặc không tồn tại.</p>
+    </div>
+  )
+))}
+
 
                 <div className="orderaccount-summary">
                   <span className="orderaccount-total">

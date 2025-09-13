@@ -1,6 +1,6 @@
 
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://backend-tttn-deployment.onrender.com/api";
 
 export const CATEGORIES = `${BASE_URL}/types`; // Định nghĩa đúng
 export const SUBCATEGORIES = `${BASE_URL}/subcategories`; // API danh mục con

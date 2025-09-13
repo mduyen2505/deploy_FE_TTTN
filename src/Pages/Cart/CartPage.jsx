@@ -50,7 +50,7 @@ const CartPage = () => {
             quantity: product.quantity,
             image: product.productId.image.startsWith("http")
               ? product.productId.image
-              : `http://localhost:3000/images/${product.productId.image}`,
+              : `https://backend-tttn-deployment.onrender.com/images/${product.productId.image}`,
           }));
 
           setCartItems(formattedCartItems);

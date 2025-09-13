@@ -22,7 +22,7 @@ const Ordershipped = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:3000/api/orders", {
+        const response = await axios.get("https://backend-tttn-deployment.onrender.com/api/orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -56,7 +56,7 @@ const Ordershipped = () => {
       }
   
       const response = await axios.put(
-        "http://localhost:3000/api/orders/deliver",
+        "https://backend-tttn-deployment.onrender.com/api/orders/deliver",
         { orderId },
         { 
           headers: { 
@@ -133,7 +133,7 @@ const Ordershipped = () => {
         src={
           item.productId.image.startsWith("http")
             ? item.productId.image
-            : `http://localhost:3000/images/${item.productId.image}`
+            : `https://backend-tttn-deployment.onrender.com/images/${item.productId.image}`
         }
         alt={item.productId.name}
         className="orderaccount-item-image"

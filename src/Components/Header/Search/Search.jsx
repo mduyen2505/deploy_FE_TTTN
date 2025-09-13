@@ -12,7 +12,7 @@ const Search = () => {
 
     // Gọi API lấy danh sách sản phẩm
     useEffect(() => {
-        fetch("http://localhost:3000/api/products")
+        fetch("https://backend-tttn-deployment.onrender.com/api/products")
             .then((response) => response.json())
             .then((data) => setProducts(data))
             .catch((error) => console.error("Error fetching products:", error));
@@ -66,7 +66,7 @@ const Search = () => {
                             className="searchItem"
                             onClick={() => handleProductClick(product._id)}
                         >
-                            <img src={`http://localhost:3000/images/${product.image}`} alt={product.name} />
+                            <img src={`https://backend-tttn-deployment.onrender.com/images/${product.image}`} alt={product.name} />
                             <div>
                                 <p className="productName">{product.name}</p>
                                 <p className="productPrice">{product.promotionPrice?.toLocaleString()} VND</p>

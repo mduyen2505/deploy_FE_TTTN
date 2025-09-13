@@ -211,7 +211,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:3000/api/users/auth/google";
+    window.location.href = "https://backend-tttn-deployment.onrender.com/api/users/auth/google";
   };
   
   return (

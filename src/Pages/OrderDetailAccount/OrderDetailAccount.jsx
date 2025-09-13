@@ -103,8 +103,8 @@ const OrderDetail = () => {
             const productImage = item.productId?.image
               ? (item.productId.image.startsWith("http") 
                 ? item.productId.image 
-                : `http://localhost:3000/images/${item.productId.image}`)
-              : `http://localhost:3000/images/default-product.png`;
+                : `https://backend-tttn-deployment.onrender.com/images/${item.productId.image}`)
+              : `https://backend-tttn-deployment.onrender.com/images/default-product.png`;
 
             return (
               <div key={idx} className="orderaccount-item">

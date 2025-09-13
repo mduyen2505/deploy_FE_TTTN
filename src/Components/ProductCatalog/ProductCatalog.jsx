@@ -57,7 +57,7 @@ const ProductCatalog = () => {
                         src={
                           brand.image.startsWith("http")
                             ? brand.image
-                            : `http://localhost:3000/images/${brand.image}`
+                            : `https://backend-tttn-deployment.onrender.com/images/${brand.image}`
                         }
                         alt={brand.title}
                       />

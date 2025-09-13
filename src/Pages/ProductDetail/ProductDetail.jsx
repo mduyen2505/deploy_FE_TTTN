@@ -54,7 +54,7 @@ const ProductDetail = () => {
         };
         const fetchReviews = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/reviews/${id}`);
+                const response = await axios.get(`https://backend-tttn-deployment.onrender.com/api/reviews/${id}`);
                 setReviews(response.data.reviews);
             } catch (error) {
                 console.error("Lỗi khi lấy đánh giá:", error);
@@ -159,7 +159,7 @@ const ProductDetail = () => {
                 return;
             }
 
-            const response = await axios.post("http://localhost:3000/api/reviews/", {
+            const response = await axios.post("https://backend-tttn-deployment.onrender.com/api/reviews/", {
                 productId: product._id,
                 orderId,
                 rating,
@@ -195,7 +195,7 @@ const ProductDetail = () => {
                 <div className="product-detail-image">
                     {product.image && (
                         <img 
-                            src={product.image.startsWith("http") ? product.image : `http://localhost:3000/images/${product.image}`} 
+                            src={product.image.startsWith("http") ? product.image : `https://backend-tttn-deployment.onrender.com/images/${product.image}`} 
                             alt={product.name} 
                         />
                     )}
@@ -351,7 +351,7 @@ const ProductDetail = () => {
                     <img
                         src={recommendedProduct.image && recommendedProduct.image.startsWith("http")
                             ? recommendedProduct.image
-                            : `http://localhost:3000/images/${recommendedProduct.image}`}
+                            : `https://backend-tttn-deployment.onrender.com/images/${recommendedProduct.image}`}
                         alt={recommendedProduct.name}
                         className="product-image"
                     />

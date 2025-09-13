@@ -56,7 +56,7 @@ const handleRemoveFromWishlist = async (productId) => {
   <FavoriteIcon style={{ color: "red" }} />
 </div>
 
-          <img src={`http://localhost:3000/images/${product.image}`} alt={product.name} className="product-image" />
+          <img src={`https://backend-tttn-deployment.onrender.com/images/${product.image}`} alt={product.name} className="product-image" />
           <div className="product-info">
             <h5 className="product-name">{product.name}</h5>
             <div className="rating">

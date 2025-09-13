@@ -48,7 +48,7 @@ const ProductsbyBrand = () => {
             {brand && (
                     <div className="brand-header">
                         <img 
-                            src={brand.image.startsWith("http") ? brand.image : `http://localhost:3000/images/${brand.image}`} 
+                            src={brand.image.startsWith("http") ? brand.image : `https://backend-tttn-deployment.onrender.com/images/${brand.image}`} 
                             alt={brand.title} 
                             className="brand-logo"
                         />

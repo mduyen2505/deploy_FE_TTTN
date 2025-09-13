@@ -71,7 +71,7 @@ const Promo = () => {
                     vouchers.map((voucher) => (
                         <div key={voucher._id} className="voucher-card">
                             <img
-                                src={`http://localhost:3000/images/${voucher.image}`}
+                                src={`https://backend-tttn-deployment.onrender.com/images/${voucher.image}`}
                                 alt={voucher.name}
                                 className="voucher-logo"
                             />

@@ -61,22 +61,7 @@ const MenuPage = () => {
         fetchBrands();
     }, []);
 
-    // Hàm áp dụng bộ lọc
-     const applyFilters = () => {
-        const filtered = products.filter((product) => {
-            const priceMatch = selectedPriceRange.some((range) => {
-                const [min, max] = range.split("-").map((v) => parseInt(v));
-                if (isNaN(max)) return product.price >= min;
-                return product.price >= min && product.price <= max;
-            });
-
-            const brandMatch = selectedBrand.length === 0 || selectedBrand.includes(product.brandId.title);
-
-            return priceMatch && brandMatch;
-        });
-
-        setFilteredProducts(filtered);
-    };
+    
 
     // Tính toán số trang
     const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
